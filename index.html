@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <!-- <h1>Hallo WetterApp</h1> -->
+    <div class="app">
+      <div class="navigation">
+        <p class="navigation__item">[ZURÜCK]</p>
+        <p class="navigation__item">[FAVORIT]</p>
+      </div>
+      <div class="current-weather">
+        <p class="current-weather__city">Löbau</p>
+        <p class="current-weather__temperature">8°</p>
+        <p class="current-weather__condition">Klar</p>
+        <p class="current-weather__top-bottom-temp">H:10° T:1°</p>
+      </div>
+      <div class="hourly-forecast">
+        <div class="hourly-forecast__description">
+          <p class="hourly-forecast__text">
+            Heute leicht bewölkt. Wind bis zu 11.2 km/h.
+          </p>
+          <hr />
+        </div>
+        <div class="hourly-forecast__list">
+          <div class="forecast-vertical">
+            <p class="forecast-vertical__time">Jetzt</p>
+            <p class="forecast-vertical__symbol">[SYMBOL]</p>
+            <p class="forecast-vertical__temperature">8°</p>
+          </div>
+          <div class="forecast-vertical">
+            <p class="forecast-vertical__time">18 Uhr</p>
+            <p class="forecast-vertical__symbol">[SYMBOL]</p>
+            <p class="forecast-vertical__temperature">6°</p>
+          </div>
+          <div class="forecast-vertical">
+            <p class="forecast-vertical__time">19 Uhr</p>
+            <p class="forecast-vertical__symbol">[SYMBOL]</p>
+            <p class="forecast-vertical__temperature">5°</p>
+          </div>
+          <div class="forecast-vertical">
+            <p class="forecast-vertical__time">20 Uhr</p>
+            <p class="forecast-vertical__symbol">[SYMBOL]</p>
+            <p class="forecast-vertical__temperature">4°</p>
+          </div>
+          <div class="forecast-vertical">
+            <p class="forecast-vertical__time">21 Uhr</p>
+            <p class="forecast-vertical__symbol">[SYMBOL]</p>
+            <p class="forecast-vertical__temperature">3°</p>
+          </div>
+          <div class="forecast-vertical">
+            <p class="forecast-vertical__time">22 Uhr</p>
+            <p class="forecast-vertical__symbol">[SYMBOL]</p>
+            <p class="forecast-vertical__temperature">3°</p>
+          </div>
+        </div>
+      </div>
+      <div class="weekly-forecast">
+        <div class="weekly-forecast__description">
+          <p class="weekly-forecast__text">
+            Vorhersage für die nächsten 3 Tage:
+          </p>
+        </div>
+        <div class="forecast-horizontal">
+          <hr />
+          <p class="forecast-horizontal__text">
+            Heute
+            <span class="forecast-horizontal__symbol">[SYMBOL]</span> H.10° T:1°
+            Wind: 11.2 Km/h
+          </p>
+        </div>
+        <div class="forecast-horizontal">
+          <hr />
+          <p class="forecast-horizontal__text">
+            Mi <span class="forecast-horizontal__symbol">[SYMBOL]</span> H.11°
+            T:1° Wind: 16.2 Km/h
+          </p>
+        </div>
+        <div class="forecast-horizontal">
+          <hr />
+          <p class="forecast-horizontal__text">
+            Do <span class="forecast-horizontal__symbol">[SYMBOL]</span> H.12°
+            T:3° Wind: 17.6 Km/h
+          </p>
+        </div>
+      </div>
+      <div class="weather-details">
+        <div class="detail-block">
+          <p class="detail-block__headline">Feuchtigkeit</p>
+          <p class="detail-block__information">51%</p>
+        </div>
+        <div class="detail-block">
+          <p class="detail-block__headline">Gefühlt</p>
+          <p class="detail-block__information">7.7°</p>
+        </div>
+        <div class="detail-block">
+          <p class="detail-block__headline">Sonnenaufgang</p>
+          <p class="detail-block__information">06:39 Uhr</p>
+        </div>
+        <div class="detail-block">
+          <p class="detail-block__headline">Sonnenuntergang</p>
+          <p class="detail-block__information">17:48 Uhr</p>
+        </div>
+        <div class="detail-block">
+          <p class="detail-block__headline">Niederschlag</p>
+          <p class="detail-block__information">0mm</p>
+        </div>
+        <div class="detail-block">
+          <p class="detail-block__headline">UV-Index</p>
+          <p class="detail-block__information">0</p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
