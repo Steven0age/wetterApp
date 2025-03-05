@@ -1,8 +1,6 @@
-body {
-  width: 400px;
-  margin: 15vh auto;
-  background-color: rgb(32, 29, 29);
-  color: #f0f8ff;
+@font-face {
+  font-family: "Inter";
+  src: url(./assets/Inter/Inter-VariableFont_opsz.ttf);
 }
 
 @mixin devBorder() {
@@ -21,38 +19,76 @@ body {
   align-items: center;
 }
 
+@mixin blurred-tile() {
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+}
+
+@mixin slight-underline-top() {
+  border-top: rgb(255, 255, 255, 0.8) solid 0.1px;
+}
+
+body {
+  @include centered-row();
+  height: 100vh;
+  font-family: Inter, Helvetica;
+  font-weight: 400;
+  //background-color: rgb(32, 29, 29);
+  background-color: #3381f5;
+  color: #f0f8ff;
+}
+
 .app {
   @include devBorder();
   display: flex;
   flex-direction: column;
+  width: 400px;
+  height: 900px;
+  margin: auto;
+  padding: 1rem 1rem;
+  gap: 2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.581);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+  overflow-y: scroll;
 }
 
 .navigation {
-  @include devBorder();
   @include centered-row();
   justify-content: space-between;
   padding: 0.5rem;
+
+  &__back,
+  &__favorit {
+    width: 1.8rem;
+  }
 }
 
 .current-weather {
-  @include devBorder();
   @include centered-column();
   gap: 0.5rem;
   padding: 2rem 0;
 
   &__city {
-    font-size: 1.2rem;
+    font-size: 2rem;
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
   }
+
   &__temperature {
-    font-size: 3rem;
+    font-size: 4.5rem;
+    font-weight: 200;
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
   }
 }
 
 .hourly-forecast {
-  @include devBorder();
+  @include blurred-tile();
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 
   &__description {
     text-align: center;
@@ -60,12 +96,54 @@ body {
 
   &__list {
     @include centered-row();
+    justify-content: space-evenly;
+    @include slight-underline-top();
     overflow-y: scroll;
+    padding: 1rem 0;
     gap: 0.5rem;
   }
 }
 
 .forecast-vertical {
   @include centered-column();
-  gap: 0.2rem;
+  gap: 0.8rem;
+}
+
+.weekly-forecast {
+  @include blurred-tile();
+
+  &__description {
+    padding-bottom: 1rem;
+  }
+}
+
+.forecast-horizontal {
+  //@include devBorder();
+  @include centered-row();
+  @include slight-underline-top();
+  justify-content: space-evenly;
+  padding: 1rem 0;
+
+  &__text {
+    @include centered-row();
+    justify-content: space-evenly;
+  }
+}
+
+.weather-details {
+  //@include devBorder();
+  @include centered-row();
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.detail-block {
+  @include blurred-tile();
+  text-align: center;
+  flex: 1 1 35%;
+
+  &__information {
+    font-size: 1.5rem;
+    padding: 1rem 0;
+  }
 }
