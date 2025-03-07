@@ -1,7 +1,7 @@
 import "./style.scss";
 import "./normalize.scss";
 import { getDataFromAPI } from "./api";
-import { findNow, updateCurrentWeather } from "./DomManipulation";
+import { findCurrentHour, updateCurrentWeather } from "./DomManipulation";
 
 export let currentWeather = { data: null };
 
@@ -17,4 +17,4 @@ export function getCurrentWeather() {
 }
 
 loadWeather("Dresden");
-findNow();
+findCurrentHour();
