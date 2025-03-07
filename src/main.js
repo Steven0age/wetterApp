@@ -1,14 +1,15 @@
 import "./style.scss";
 import "./normalize.scss";
 import { getDataFromAPI } from "./api";
-import { updateCurrentWeather } from "./DomManipulation";
+import { findNow, updateCurrentWeather } from "./DomManipulation";
 
 export let currentWeather = { data: null };
 
 async function loadWeather(city) {
-  let weatherData = await getDataFromAPI(city);
-  currentWeather = weatherData;
-  console.log("currentWeather ist", currentWeather);
+  let newWeatherData = await getDataFromAPI(city);
+  currentWeather = newWeatherData;
+  //console.log("currentWeather ist", currentWeather);
+  updateCurrentWeather();
 }
 
 export function getCurrentWeather() {
@@ -16,4 +17,4 @@ export function getCurrentWeather() {
 }
 
 loadWeather("Dresden");
-updateCurrentWeather();
+findNow();
