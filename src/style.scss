@@ -109,7 +109,7 @@ body {
   gap: 0.8rem;
 }
 
-.weekly-forecast {
+.daily-forecast {
   @include blurred-tile();
 
   &__description {

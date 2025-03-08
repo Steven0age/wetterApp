@@ -1,4 +1,4 @@
-import { currentWeather, getCurrentWeather } from "./main";
+import { getCurrentWeather, findCurrentHour, dayNames } from "./main";
 
 let currentWeatherEl = document.querySelector(".current-weather");
 let hourlyForecastEl = document.querySelector(".hourly-forecast");
@@ -6,10 +6,7 @@ let hourlyForecastEl = document.querySelector(".hourly-forecast");
 
 export async function renderCurrentWeather() {
   let data = await getCurrentWeather();
-  let currentHourTimeStamp = findCurrentHour();
-  let indexOfCurrentHour = data.forecast.forecastday[0].hour.findIndex((x) => {
-    return x.time_epoch == currentHourTimeStamp;
-  });
+
   currentWeatherEl.innerHTML = `
   <p class="current-weather__city">${data.location.name}</p>
         <p class="current-weather__temperature">${Math.floor(
@@ -34,9 +31,10 @@ export async function renderHourlyForecast() {
   let data = await getCurrentWeather();
   let currentHourTimeStamp = await findCurrentHour();
   let hourlyForecastListEl = document.querySelector(".hourly-forecast__list");
-  let i = data.forecast.forecastday[0].hour.findIndex((x) => {
+  let indexOfCurrentHour = data.forecast.forecastday[0].hour.findIndex((x) => {
     return x.time_epoch == currentHourTimeStamp;
   });
+  let i = indexOfCurrentHour;
   let maxLoopsToday = 24 - i;
   let newHTML = "";
 
@@ -85,11 +83,73 @@ export async function renderHourlyForecast() {
   }
 }
 
-export function findCurrentHour() {
-  const now = Date.now() / 3600000;
-  const currentHour = Math.floor(now);
-  const milliSec = (3600000 * currentHour) / 1000;
-  //console.log("milliSec ist:", milliSec);
-  return milliSec;
-  //const newTimestamp = new Date(milliS);
+export async function renderDailyForecast() {
+  let data = await getCurrentWeather();
+  let dailyForecastListEl = document.querySelector(".daily-forecast");
+  console.log(
+    "Max Temp heute= ",
+    data.forecast.forecastday[0].day.condition.icon
+  );
+  let tomorrow = dayNames(data.forecast.forecastday[1].date_epoch);
+  let dayAfterTomorrow = dayNames(data.forecast.forecastday[2].date_epoch);
+
+  let newHTML = `
+        <div class="daily-forecast__description">
+          <p class="daily-forecast__text">
+            !Vorhersage für die nächsten 3 Tage:
+          </p>
+        </div>
+        <div class="forecast-horizontal">
+          <div class="forecast-horizontal__day">Heute</div>
+          <div class="forecast-horizontal__symbol"><img src="${
+            data.forecast.forecastday[0].day.condition.icon
+          }" alt="${
+    data.forecast.forecastday[0].day.condition.text
+  }"></img></div>
+          <div class="forecast-horizontal__hottest">H:${Math.floor(
+            data.forecast.forecastday[0].day.maxtemp_c
+          )}°</div>
+          <div class="forecast-horizontal__coldest">T:${Math.floor(
+            data.forecast.forecastday[0].day.mintemp_c
+          )}°</div>
+          <div class="forecast-horizontal__wind">Wind: ${
+            data.forecast.forecastday[0].day.maxwind_kph
+          } Km/h</div>
+        </div>
+        <div class="forecast-horizontal">
+          <div class="forecast-horizontal__day">${tomorrow}</div>
+          <div class="forecast-horizontal__symbol"><img src="${
+            data.forecast.forecastday[0].day.condition.icon
+          }" alt="${
+    data.forecast.forecastday[1].day.condition.text
+  }"></img></div>
+          <div class="forecast-horizontal__hottest">H:${Math.floor(
+            data.forecast.forecastday[1].day.maxtemp_c
+          )}°</div>
+          <div class="forecast-horizontal__coldest">T:${Math.floor(
+            data.forecast.forecastday[1].day.mintemp_c
+          )}°</div>
+          <div class="forecast-horizontal__wind">Wind: ${
+            data.forecast.forecastday[1].day.maxwind_kph
+          } Km/h</div>
+        </div>
+        <div class="forecast-horizontal">
+          <div class="forecast-horizontal__day">${dayAfterTomorrow}</div>
+          <div class="forecast-horizontal__symbol"><img src="${
+            data.forecast.forecastday[0].day.condition.icon
+          }" alt="${
+    data.forecast.forecastday[2].day.condition.text
+  }"></img></div>
+          <div class="forecast-horizontal__hottest">H:${Math.floor(
+            data.forecast.forecastday[2].day.maxtemp_c
+          )}°</div>
+          <div class="forecast-horizontal__coldest">T:${Math.floor(
+            data.forecast.forecastday[2].day.mintemp_c
+          )}°</div>
+          <div class="forecast-horizontal__wind">Wind: ${
+            data.forecast.forecastday[2].day.maxwind_kph
+          } Km/h</div>
+        </div>
+        `;
+  dailyForecastListEl.innerHTML = newHTML;
 }
