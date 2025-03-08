@@ -12,9 +12,13 @@ export async function renderCurrentWeather() {
   });
   currentWeatherEl.innerHTML = `
   <p class="current-weather__city">${data.location.name}</p>
-        <p class="current-weather__temperature">${data.current.temp_c}</p>
+        <p class="current-weather__temperature">${Math.floor(
+          data.current.temp_c
+        )}</p>
         <p class="current-weather__condition">${data.current.condition.text}</p>
-        <p class="current-weather__top-bottom-temp">H:${data.forecast.forecastday[0].day.maxtemp_c}° T:${data.forecast.forecastday[0].day.mintemp_c}°</p>`;
+        <p class="current-weather__top-bottom-temp">H:${
+          data.forecast.forecastday[0].day.maxtemp_c
+        }° T:${data.forecast.forecastday[0].day.mintemp_c}°</p>`;
 
   hourlyForecastEl.innerHTML = `
         <div class="hourly-forecast__description">
@@ -23,11 +27,6 @@ export async function renderCurrentWeather() {
           </p>
         </div>
         <div class="hourly-forecast__list">
-          <div class="forecast-vertical">
-            <p class="forecast-vertical__time">Jetzt</p>
-            <p class="forecast-vertical__symbol"><img src="${data.forecast.forecastday[0].day.condition.icon}" alt="${data.forecast.forecastday[0].day.condition.text}"></p>
-            <p class="forecast-vertical__temperature">${data.forecast.forecastday[0].hour[indexOfCurrentHour].temp_c}°</p>
-          </div>
         </div>`;
 }
 
@@ -35,27 +34,23 @@ export async function renderHourlyForecast() {
   let data = await getCurrentWeather();
   let currentHourTimeStamp = await findCurrentHour();
   let hourlyForecastListEl = document.querySelector(".hourly-forecast__list");
-  console.log("currentHourTimeStamp =", currentHourTimeStamp);
-
   let i = data.forecast.forecastday[0].hour.findIndex((x) => {
     return x.time_epoch == currentHourTimeStamp;
   });
-
   let maxLoopsToday = 24 - i;
-  console.log("stopLoopToday =", maxLoopsToday);
-  console.log("indexFound =", i);
   let newHTML = "";
+
   newHTML += `<div class="forecast-vertical">
       <p class="forecast-vertical__time">Jetzt</p>
-      <p class="forecast-vertical__symbol"><img src="${data.forecast.forecastday[0].hour[i].condition.icon}" alt="${data.forecast.forecastday[0].hour[i].condition.text}"></p>
+      <p class="forecast-vertical__symbol"><img src="${
+        data.forecast.forecastday[0].hour[i].condition.icon
+      }" alt="${data.forecast.forecastday[0].hour[i].condition.text}"></p>
       <p class="forecast-vertical__temperature">
-        ${data.forecast.forecastday[0].hour[i].temp_c}°
+        ${Math.floor(data.forecast.forecastday[0].hour[i].temp_c)}°
       </p>
       </div>`;
+
   for (i += 1; i < 24; i++) {
-    // console.log("i =", i);
-    // console.log("hour=", data.forecast.forecastday[0].hour[i]);
-    // console.log(`temperature">${data.forecast.forecastday[0].hour[i].temp_c}°`);
     newHTML += ` 
     <div class="forecast-vertical">
       <p class="forecast-vertical__time">${new Date(
@@ -65,15 +60,13 @@ export async function renderHourlyForecast() {
         data.forecast.forecastday[0].hour[i].condition.icon
       }" alt="${data.forecast.forecastday[0].hour[i].condition.text}"></p>
       <p class="forecast-vertical__temperature">
-        ${data.forecast.forecastday[0].hour[i].temp_c}°
+        ${Math.floor(data.forecast.forecastday[0].hour[i].temp_c)}°
       </p>
     </div>`;
-    console.log("newHTML =", newHTML);
   }
+
   if (maxLoopsToday > 0) {
     for (let x = 0; x < 24 - maxLoopsToday; x++) {
-      // console.log("x =", x);
-      // console.log("temp C =", data.forecast.forecastday);
       newHTML += `
       <div class="forecast-vertical">
         <p class="forecast-vertical__time">${new Date(
@@ -83,18 +76,12 @@ export async function renderHourlyForecast() {
           data.forecast.forecastday[1].hour[x].condition.icon
         }" alt="${data.forecast.forecastday[1].hour[x].condition.text}"></p>
         <p class="forecast-vertical__temperature">
-          ${data.forecast.forecastday[1].hour[x].temp_c}°
+          ${Math.floor(data.forecast.forecastday[1].hour[x].temp_c)}°
         </p>
       </div>`;
     }
-    //console.log("newHTML =", newHTML);
-    hourlyForecastListEl.innerHTML = newHTML;
-    //console.log("hourlyForecastListEl =", hourlyForecastListEl);
 
-    // Step 1 Schleife, die 23x läuft
-    // Step 2 23x in der Schleife den HTML Code ausgeben (jeweils mit der Schleifenabfrage = index-Nummer)
-    // Step 3 das Ganze in eine Variable packen
-    // Step 4 die fertige "Inner-HTML"-Variable returnen
+    hourlyForecastListEl.innerHTML = newHTML;
   }
 }
 
