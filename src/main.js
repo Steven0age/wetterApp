@@ -5,6 +5,7 @@ import {
   renderCurrentWeather,
   renderHourlyForecast,
   renderDailyForecast,
+  renderWeatherDetails,
 } from "./DomManipulation";
 
 export let currentWeather = { data: null };
@@ -16,6 +17,7 @@ async function loadWeather(city) {
   renderCurrentWeather();
   renderHourlyForecast();
   renderDailyForecast();
+  renderWeatherDetails();
 }
 
 export function getCurrentWeather() {
