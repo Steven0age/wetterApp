@@ -1,3 +1,4 @@
+import moment from "moment/moment";
 import { getCurrentWeather, findCurrentHour, dayNames } from "./main";
 
 let currentWeatherEl = document.querySelector(".current-weather");
@@ -30,6 +31,7 @@ export async function renderCurrentWeather() {
 export async function renderHourlyForecast() {
   let data = await getCurrentWeather();
   let currentHourTimeStamp = await findCurrentHour();
+  console.log("currentHourTimeStamp", currentHourTimeStamp);
   let hourlyForecastListEl = document.querySelector(".hourly-forecast__list");
   let indexOfCurrentHour = data.forecast.forecastday[0].hour.findIndex((x) => {
     return x.time_epoch == currentHourTimeStamp;
@@ -164,11 +166,17 @@ export async function renderWeatherDetails() {
     },
     {
       headline: "Sonnenaufgang",
-      value: `${data.forecast.forecastday[0].astro.sunrise} Uhr`,
+      value: `${moment(
+        data.forecast.forecastday[0].astro.sunrise,
+        "h:mm:sss A"
+      ).format("HH:mm")} Uhr`,
     },
     {
       headline: "Sonnenuntergang",
-      value: `${data.forecast.forecastday[0].astro.sunset} Uhr`,
+      value: `${moment(
+        data.forecast.forecastday[0].astro.sunset,
+        "h:mm:sss A"
+      ).format("HH:mm")} Uhr`,
     },
     {
       headline: "Niederschlag",
@@ -188,6 +196,7 @@ export async function renderWeatherDetails() {
                 <p class="detail-block__information">${a.value}</p>
               </div>`;
   });
-  console.log("newHTML =", newHTML);
+  //console.log("newHTML =", newHTML);
+  console.log("Moment =", moment("06:34 PM", "h:mm:sss A").format("HH:mm"));
   weatherDetailsEl.innerHTML = newHTML;
 }

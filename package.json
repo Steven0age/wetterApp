@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "moment": "^2.30.1",
     "sass": "^1.85.1",
     "vite": "^6.1.0"
   }
