@@ -19,7 +19,7 @@ export async function renderCurrentWeather() {
   hourlyForecastEl.innerHTML = `
         <div class="hourly-forecast__description">
           <p class="hourly-forecast__text">
-            Heute ${data.current.condition.text}. Wind bis zu ${data.current.wind_kph} km/h.
+            Heute ist es ${data.forecast.forecastday[0].day.condition.text}. Wind bis zu ${data.forecast.forecastday[0].day.maxwind_kph} km/h.
           </p>
         </div>
         <div class="hourly-forecast__list">
@@ -45,7 +45,14 @@ export async function renderHourlyForecast() {
   console.log("stopLoopToday =", maxLoopsToday);
   console.log("indexFound =", i);
   let newHTML = "";
-  for (i; i < 24; i++) {
+  newHTML += `<div class="forecast-vertical">
+      <p class="forecast-vertical__time">Jetzt</p>
+      <p class="forecast-vertical__symbol"><img src="${data.forecast.forecastday[0].hour[i].condition.icon}" alt="${data.forecast.forecastday[0].hour[i].condition.text}"></p>
+      <p class="forecast-vertical__temperature">
+        ${data.forecast.forecastday[0].hour[i].temp_c}°
+      </p>
+      </div>`;
+  for (i += 1; i < 24; i++) {
     // console.log("i =", i);
     // console.log("hour=", data.forecast.forecastday[0].hour[i]);
     // console.log(`temperature">${data.forecast.forecastday[0].hour[i].temp_c}°`);
@@ -53,7 +60,7 @@ export async function renderHourlyForecast() {
     <div class="forecast-vertical">
       <p class="forecast-vertical__time">${new Date(
         data.forecast.forecastday[0].hour[i].time_epoch * 1000
-      ).getHours()}</p>
+      ).getHours()} Uhr</p>
       <p class="forecast-vertical__symbol"><img src="${
         data.forecast.forecastday[0].hour[i].condition.icon
       }" alt="${data.forecast.forecastday[0].hour[i].condition.text}"></p>
@@ -61,6 +68,7 @@ export async function renderHourlyForecast() {
         ${data.forecast.forecastday[0].hour[i].temp_c}°
       </p>
     </div>`;
+    console.log("newHTML =", newHTML);
   }
   if (maxLoopsToday > 0) {
     for (let x = 0; x < 24 - maxLoopsToday; x++) {
@@ -70,7 +78,7 @@ export async function renderHourlyForecast() {
       <div class="forecast-vertical">
         <p class="forecast-vertical__time">${new Date(
           data.forecast.forecastday[1].hour[x].time_epoch * 1000
-        ).getHours()}</p>
+        ).getHours()} Uhr</p>
         <p class="forecast-vertical__symbol"><img src="${
           data.forecast.forecastday[1].hour[x].condition.icon
         }" alt="${data.forecast.forecastday[1].hour[x].condition.text}"></p>
