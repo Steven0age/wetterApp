@@ -1,7 +1,11 @@
 import "./style.scss";
 import "./normalize.scss";
 import { getDataFromAPI } from "./api";
-import { findCurrentHour, updateCurrentWeather } from "./DomManipulation";
+import {
+  findCurrentHour,
+  renderCurrentWeather,
+  renderHourlyForecast,
+} from "./DomManipulation";
 
 export let currentWeather = { data: null };
 
@@ -9,7 +13,8 @@ async function loadWeather(city) {
   let newWeatherData = await getDataFromAPI(city);
   currentWeather = newWeatherData;
   //console.log("currentWeather ist", currentWeather);
-  updateCurrentWeather();
+  renderCurrentWeather();
+  renderHourlyForecast();
 }
 
 export function getCurrentWeather() {
@@ -17,4 +22,3 @@ export function getCurrentWeather() {
 }
 
 loadWeather("Dresden");
-findCurrentHour();
