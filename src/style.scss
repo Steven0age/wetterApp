@@ -124,23 +124,24 @@ body {
   justify-content: space-evenly;
   padding: 1rem 0;
 
-  &__text {
-    @include centered-row();
-    justify-content: space-evenly;
+  &__day {
+    width: 2rem;
+  }
+  &__symbol img {
+    width: 2.5rem;
   }
 }
 
 .weather-details {
   //@include devBorder();
-  @include centered-row();
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
 .detail-block {
   @include blurred-tile();
   text-align: center;
-  flex: 1 1 35%;
 
   &__information {
     font-size: 1.5rem;
