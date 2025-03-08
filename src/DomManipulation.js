@@ -41,7 +41,8 @@ export async function renderHourlyForecast() {
     return x.time_epoch == currentHourTimeStamp;
   });
 
-  let stop = i + 23;
+  let maxLoopsToday = 24 - i;
+  console.log("stopLoopToday =", maxLoopsToday);
   console.log("indexFound =", i);
   let newHTML = "";
   for (i; i < 24; i++) {
@@ -61,20 +62,32 @@ export async function renderHourlyForecast() {
       </p>
     </div>`;
   }
-  //console.log("newHTML =", newHTML);
-  hourlyForecastListEl.innerHTML = newHTML;
-  //console.log("hourlyForecastListEl =", hourlyForecastListEl);
+  if (maxLoopsToday > 0) {
+    for (let x = 0; x < 24 - maxLoopsToday; x++) {
+      // console.log("x =", x);
+      // console.log("temp C =", data.forecast.forecastday);
+      newHTML += `
+      <div class="forecast-vertical">
+        <p class="forecast-vertical__time">${new Date(
+          data.forecast.forecastday[1].hour[x].time_epoch * 1000
+        ).getHours()}</p>
+        <p class="forecast-vertical__symbol"><img src="${
+          data.forecast.forecastday[1].hour[x].condition.icon
+        }" alt="${data.forecast.forecastday[1].hour[x].condition.text}"></p>
+        <p class="forecast-vertical__temperature">
+          ${data.forecast.forecastday[1].hour[x].temp_c}°
+        </p>
+      </div>`;
+    }
+    //console.log("newHTML =", newHTML);
+    hourlyForecastListEl.innerHTML = newHTML;
+    //console.log("hourlyForecastListEl =", hourlyForecastListEl);
 
-  // Step 1 Schleife, die 23x läuft
-  // Step 2 23x in der Schleife den HTML Code ausgeben (jeweils mit der Schleifenabfrage = index-Nummer)
-  // Step 3 das Ganze in eine Variable packen
-  // Step 4 die fertige "Inner-HTML"-Variable returnen
-
-  //   <div class="forecast-vertical">
-  //   <p class="forecast-vertical__time">Jetzt</p>
-  //   <p class="forecast-vertical__symbol">src="${data.forecast.forecastday[0].day.condition.icon}" alt="${data.forecast.forecastday[0].day.condition.text}</p>
-  //   <p class="forecast-vertical__temperature">${data.forecast.forecastday[0].hour[indexOfCurrentHour].temp_c}°</p>
-  // </div>
+    // Step 1 Schleife, die 23x läuft
+    // Step 2 23x in der Schleife den HTML Code ausgeben (jeweils mit der Schleifenabfrage = index-Nummer)
+    // Step 3 das Ganze in eine Variable packen
+    // Step 4 die fertige "Inner-HTML"-Variable returnen
+  }
 }
 
 export function findCurrentHour() {
