@@ -6,18 +6,22 @@ import {
   renderHourlyForecast,
   renderDailyForecast,
   renderWeatherDetails,
+  renderWeatherForecastPage,
+  renderloadCurrentWeather,
 } from "./DomManipulation";
 
 export let currentWeather = { data: null };
 
 async function loadWeather(city) {
+  renderloadCurrentWeather();
   let newWeatherData = await getDataFromAPI(city);
   currentWeather = newWeatherData;
-  //console.log("currentWeather ist", currentWeather);
-  renderCurrentWeather();
-  renderHourlyForecast();
-  renderDailyForecast();
-  renderWeatherDetails();
+  // console.log("currentWeather ist", currentWeather);
+  // renderWeatherForecastPage();
+  // renderCurrentWeather();
+  // renderHourlyForecast();
+  // renderDailyForecast();
+  // renderWeatherDetails();
 }
 
 export function getCurrentWeather() {

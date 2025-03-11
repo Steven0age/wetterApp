@@ -1,18 +1,85 @@
 import moment from "moment/moment";
 import { getCurrentWeather, findCurrentHour, dayNames } from "./main";
 
-let currentWeatherEl = document.querySelector(".current-weather");
-let hourlyForecastEl = document.querySelector(".hourly-forecast");
-//let hourlyForecastListEl = document.querySelector(".hourly-forecast__list");
-
+export function renderloadCurrentWeather() {
+  let appEl = document.querySelector(".app");
+  appEl.classList.add("app--loading");
+  let newHTML;
+  newHTML = `
+  <div class="loading">  
+  <p> Lade Wetter für [PLATZHALTER] ... </p>
+  <div class="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+          </div>
+  `;
+  appEl.innerHTML = newHTML;
+}
+export async function renderWeatherForecastPage() {
+  let appEl = document.querySelector(".app");
+  appEl.classList.remove("app--loading");
+  let newHTML;
+  newHTML = `
+     <div class="in-weather-navigation">
+        <p class="in-weather-navigation__item">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="in-weather-navigation__back"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5 8.25 12l7.5-7.5"
+            />
+          </svg>
+        </p>
+        <p class="in-weather-navigation__item">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="in-weather-navigation__favorit"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+            />
+          </svg>
+        </p>
+      </div>
+      <div class="current-weather">
+      </div>
+      <div class="hourly-forecast">
+        <div class="hourly-forecast__list">
+        </div>
+      </div>
+      <div class="daily-forecast">
+      </div>
+      <div class="weather-details">
+      </div>
+    </div>
+          `;
+  appEl.innerHTML = newHTML;
+}
 export async function renderCurrentWeather() {
+  let currentWeatherEl = document.querySelector(".current-weather");
+  let hourlyForecastEl = document.querySelector(".hourly-forecast");
+
   let data = await getCurrentWeather();
 
   currentWeatherEl.innerHTML = `
   <p class="current-weather__city">${data.location.name}</p>
         <p class="current-weather__temperature">${Math.floor(
           data.current.temp_c
-        )}</p>
+        )}°</p>
         <p class="current-weather__condition">${data.current.condition.text}</p>
         <p class="current-weather__top-bottom-temp">H:${
           data.forecast.forecastday[0].day.maxtemp_c
@@ -21,7 +88,7 @@ export async function renderCurrentWeather() {
   hourlyForecastEl.innerHTML = `
         <div class="hourly-forecast__description">
           <p class="hourly-forecast__text">
-            Heute ist es ${data.forecast.forecastday[0].day.condition.text}. Wind bis zu ${data.forecast.forecastday[0].day.maxwind_kph} km/h.
+            Heute: ${data.forecast.forecastday[0].day.condition.text}. Wind bis zu ${data.forecast.forecastday[0].day.maxwind_kph} km/h.
           </p>
         </div>
         <div class="hourly-forecast__list">
