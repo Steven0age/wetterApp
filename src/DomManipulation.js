@@ -1,7 +1,7 @@
 import moment from "moment/moment";
 import { getCurrentWeather, findCurrentHour, dayNames } from "./main";
 
-export function renderloadCurrentWeather() {
+export function renderLoadCurrentWeather() {
   let appEl = document.querySelector(".app");
   appEl.classList.add("app--loading");
   let newHTML;
@@ -19,6 +19,7 @@ export function renderloadCurrentWeather() {
 export async function renderWeatherForecastPage() {
   let appEl = document.querySelector(".app");
   appEl.classList.remove("app--loading");
+  appEl.classList.add("app--show-current-Weather");
   let newHTML;
   newHTML = `
      <div class="in-weather-navigation">

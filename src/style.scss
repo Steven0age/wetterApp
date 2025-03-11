@@ -3,6 +3,8 @@
   src: url(./assets/Inter/Inter-VariableFont_opsz.ttf);
 }
 
+$background-url: "./assets/conditionImages/day/snow_day.jpg";
+
 @mixin devBorder() {
   border: 2px solid #00ffff;
 }
@@ -60,6 +62,11 @@ body {
       rgba(32, 29, 29, 0.7) 60%,
       rgba(78, 78, 78, 0.6)
     );
+  }
+  &--show-current-Weather {
+    background-image: url("./assets/conditionImages/day/snow_day.jpg");
+    background-size: cover;
+    background-position: center;
   }
 }
 
