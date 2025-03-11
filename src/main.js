@@ -7,22 +7,22 @@ import {
   renderDailyForecast,
   renderWeatherDetails,
   renderWeatherForecastPage,
-  renderLoadCurrentWeather,
+  renderLoadingScreen,
+  setBackground,
 } from "./DomManipulation";
 
 export let currentWeather = { data: null };
 
 async function loadWeather(city) {
-  renderLoadCurrentWeather();
+  renderLoadingScreen();
   let newWeatherData = await getDataFromAPI(city);
   currentWeather = newWeatherData;
-  console.log("currentWeather ist", currentWeather);
   renderWeatherForecastPage();
+  setBackground();
   renderCurrentWeather();
   renderHourlyForecast();
   renderDailyForecast();
   renderWeatherDetails();
-  setBackground();
 }
 
 export function getCurrentWeather() {
@@ -44,9 +44,3 @@ export function dayNames(timestamp) {
 }
 
 loadWeather("Dresden");
-
-function setBackground() {
-  let appEl = document.querySelector(".app--show-current-Weather");
-  appEl.style.backgroundImage =
-    "url('/wetterApp/src/assets/conditionImages/day/sunny.jpg')";
-}

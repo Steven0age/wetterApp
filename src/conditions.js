@@ -1,11 +1,12 @@
-export function getConditionImagePath(code, isNight = false) {
+export function getConditionImagePath(code, isDay = false) {
   const condition = CONDITION_IMAGES.find((cond) => cond.code === code);
 
   if (!condition) return null;
 
   return (
-    "/weatherapp/src/assets/conditionImages/" +
-    condition[isNight ? "night" : "day"]
+    "/wetterApp/src/assets/conditionImages/" +
+    // condition[isDay ? "night" : "day"]
+    condition[isDay ? "day" : "night"]
   );
 }
 

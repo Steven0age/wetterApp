@@ -1,7 +1,18 @@
 import moment from "moment/moment";
 import { getCurrentWeather, findCurrentHour, dayNames } from "./main";
+import { getConditionImagePath } from "./conditions";
 
-export function renderLoadCurrentWeather() {
+export async function setBackground() {
+  let data = await getCurrentWeather();
+  let code = data.current.condition.code;
+  let is_day = data.current.is_day;
+  let appEl = document.querySelector(".app--show-current-Weather");
+
+  let imgUrl = getConditionImagePath(code, is_day);
+  appEl.style.backgroundImage = `url('${imgUrl}')`;
+}
+
+export function renderLoadingScreen() {
   let appEl = document.querySelector(".app");
   appEl.classList.add("app--loading");
   let newHTML;
