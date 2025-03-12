@@ -1,6 +1,62 @@
 import moment from "moment/moment";
-import { getCurrentWeather, findCurrentHour, dayNames } from "./main";
+import {
+  getCurrentWeather,
+  findCurrentHour,
+  dayNames,
+  loadWeather,
+} from "./main";
 import { getConditionImagePath } from "./conditions";
+
+export function renderMainPage() {
+  let appEl = document.querySelector(".app");
+  let newHTML;
+  newHTML = `
+<div class="main-menu">
+        <h1 class="main-menu__headline">Wetter</h1>
+        <p class="main-menu_options">Bearbeiten</p>
+      </div>
+      <input
+        class="search-bar"
+        type="search"
+        placeholder="Nach Stadt suchen..."
+      />
+      <div class="saved-weather">
+        <div class="weather-tile" data-weather-id="575184">
+          <div class="weather-tile__infos-top">
+            <div class="weather-tile__infos-topleft">
+              <h2 class="weather-tile__city">Dresden</h2>
+              <p class="weather-tile__country">Germany</p>
+            </div>
+            <div class="weather-tile__infos-topright">
+              <p class="weather-tile__current-temp">22°</p>
+            </div>
+          </div>
+          <div class="weather-tile__infos-bottom">
+            <div class="weather-tile__infos-bottomleft">
+              <p class="weather-tile__condition">Sonnig</p>
+            </div>
+            <div class="weather-tile__infos-bottomright">
+              <p class="weather-tile__top-bottom-temp">H:21° T:11°</p>
+            </div>
+          </div>
+        </div>
+`;
+  appEl.innerHTML = newHTML;
+}
+
+function testfunction(wert) {
+  console.log("wert =", wert);
+}
+
+export function addEventListenerToWeatherTile() {
+  const WeatherTileEl = document.querySelectorAll(".weather-tile");
+
+  WeatherTileEl.forEach((tile) =>
+    tile.addEventListener("click", () => {
+      loadWeather(tile.getAttribute("data-weather-id"));
+    })
+  );
+}
 
 export async function setBackground() {
   let data = await getCurrentWeather();

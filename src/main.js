@@ -9,13 +9,19 @@ import {
   renderWeatherForecastPage,
   renderLoadingScreen,
   setBackground,
+  renderMainPage,
+  addEventListenerToWeatherTile,
 } from "./DomManipulation";
 
 export let currentWeather = { data: null };
 
-async function loadWeather(city) {
+async function loadMainPage() {
+  renderMainPage();
+  addEventListenerToWeatherTile();
+}
+export async function loadWeather(id) {
   renderLoadingScreen();
-  let newWeatherData = await getDataFromAPI(city);
+  let newWeatherData = await getDataFromAPI(id);
   currentWeather = newWeatherData;
   renderWeatherForecastPage();
   setBackground();
@@ -43,4 +49,5 @@ export function dayNames(timestamp) {
   return day;
 }
 
-//loadWeather("Dresden");
+loadMainPage();
+//loadWeather("575184");
