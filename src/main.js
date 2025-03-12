@@ -43,4 +43,4 @@ export function dayNames(timestamp) {
   return day;
 }
 
-loadWeather("Dresden");
+//loadWeather("Dresden");
