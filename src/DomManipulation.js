@@ -4,6 +4,7 @@ import {
   findCurrentHour,
   dayNames,
   loadWeather,
+  loadMainPage,
 } from "./main";
 import { getConditionImagePath } from "./conditions";
 
@@ -44,11 +45,7 @@ export function renderMainPage() {
   appEl.innerHTML = newHTML;
 }
 
-function testfunction(wert) {
-  console.log("wert =", wert);
-}
-
-export function addEventListenerToWeatherTile() {
+export function listenWeatherTile() {
   const WeatherTileEl = document.querySelectorAll(".weather-tile");
 
   WeatherTileEl.forEach((tile) =>
@@ -56,6 +53,18 @@ export function addEventListenerToWeatherTile() {
       loadWeather(tile.getAttribute("data-weather-id"));
     })
   );
+}
+
+export function listenBackButton() {
+  const backButtonEl = document.querySelector(".in-weather-navigation__back");
+  backButtonEl.addEventListener("click", loadMainPage);
+}
+
+export function listenFavoritButton() {
+  const backButtonEl = document.querySelector(
+    ".in-weather-navigation__favorit"
+  );
+  backButtonEl.addEventListener("click", loadMainPage);
 }
 
 export async function setBackground() {
@@ -68,19 +77,41 @@ export async function setBackground() {
   appEl.style.backgroundImage = `url('${imgUrl}')`;
 }
 
-export function renderLoadingScreen() {
+export function clearBackground() {
+  let appEl = document.querySelector(".app--show-current-Weather");
+  console.log("appEl =", appEl);
+  // if (!appEL) {
+  //   return;
+  // } else {
+  //   return;
+  //   // appEl.classList.remove("app--show-current-Weather");
+  // }
+}
+
+export function renderLoadingScreen(city = null) {
   let appEl = document.querySelector(".app");
   appEl.classList.add("app--loading");
   let newHTML;
-  newHTML = `
+  if (!city) {
+    newHTML = `
   <div class="loading">  
-  <p> Lade Wetter für [PLATZHALTER] ... </p>
+  <p> Lade Übersicht ... </p>
+  <div class="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+          </div>`;
+  } else {
+    newHTML = `
+  <div class="loading">  
+  <p> Lade Wetter für ${city} ... </p>
   <div class="lds-ripple">
             <div></div>
             <div></div>
           </div>
           </div>
   `;
+  }
   appEl.innerHTML = newHTML;
 }
 export async function renderWeatherForecastPage() {

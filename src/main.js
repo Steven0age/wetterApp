@@ -10,18 +10,23 @@ import {
   renderLoadingScreen,
   setBackground,
   renderMainPage,
-  addEventListenerToWeatherTile,
+  listenWeatherTile,
+  listenBackButton,
+  listenFavoritButton,
+  clearBackground,
 } from "./DomManipulation";
 
 export let currentWeather = { data: null };
 
-async function loadMainPage() {
-  renderMainPage();
-  addEventListenerToWeatherTile();
-}
-export async function loadWeather(id) {
+export async function loadMainPage() {
+  clearBackground();
   renderLoadingScreen();
-  let newWeatherData = await getDataFromAPI(id);
+  renderMainPage();
+  listenWeatherTile();
+}
+export async function loadWeather(cityID) {
+  renderLoadingScreen("Dresden");
+  let newWeatherData = await getDataFromAPI(cityID);
   currentWeather = newWeatherData;
   renderWeatherForecastPage();
   setBackground();
@@ -29,6 +34,8 @@ export async function loadWeather(id) {
   renderHourlyForecast();
   renderDailyForecast();
   renderWeatherDetails();
+  listenBackButton();
+  listenFavoritButton();
 }
 
 export function getCurrentWeather() {
