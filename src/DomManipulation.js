@@ -3,7 +3,7 @@ import {
   getCurrentWeather,
   findCurrentHour,
   dayNames,
-  loadWeather,
+  loadDetailedWeatherPage,
   loadMainPage,
 } from "./main";
 import { getConditionImagePath } from "./conditions";
@@ -50,7 +50,7 @@ export function listenWeatherTile() {
 
   WeatherTileEl.forEach((tile) =>
     tile.addEventListener("click", () => {
-      loadWeather(tile.getAttribute("data-weather-id"));
+      loadDetailedWeatherPage(tile.getAttribute("data-weather-id"));
     })
   );
 }
@@ -78,19 +78,13 @@ export async function setBackground() {
 }
 
 export function clearBackground() {
-  let appEl = document.querySelector(".app--show-current-Weather");
-  console.log("appEl =", appEl);
-  // if (!appEL) {
-  //   return;
-  // } else {
-  //   return;
-  //   // appEl.classList.remove("app--show-current-Weather");
-  // }
+  let appEl = document.querySelector(".app");
+  appEl.removeAttribute("style");
+  appEl.className = "app";
 }
 
 export function renderLoadingScreen(city = null) {
   let appEl = document.querySelector(".app");
-  appEl.classList.add("app--loading");
   let newHTML;
   if (!city) {
     newHTML = `
@@ -116,7 +110,6 @@ export function renderLoadingScreen(city = null) {
 }
 export async function renderWeatherForecastPage() {
   let appEl = document.querySelector(".app");
-  appEl.classList.remove("app--loading");
   appEl.classList.add("app--show-current-Weather");
   let newHTML;
   newHTML = `

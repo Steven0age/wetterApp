@@ -19,15 +19,17 @@ import {
 export let currentWeather = { data: null };
 
 export async function loadMainPage() {
-  clearBackground();
   renderLoadingScreen();
+  clearBackground();
   renderMainPage();
   listenWeatherTile();
 }
-export async function loadWeather(cityID) {
+export async function loadDetailedWeatherPage(cityID) {
   renderLoadingScreen("Dresden");
+
   let newWeatherData = await getDataFromAPI(cityID);
   currentWeather = newWeatherData;
+
   renderWeatherForecastPage();
   setBackground();
   renderCurrentWeather();
@@ -57,4 +59,4 @@ export function dayNames(timestamp) {
 }
 
 loadMainPage();
-//loadWeather("575184");
+//loadDetailedWeatherPage("575184");
