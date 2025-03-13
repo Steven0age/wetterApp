@@ -7,6 +7,7 @@ import {
   loadMainPage,
 } from "./main";
 import { getConditionImagePath } from "./conditions";
+import { getDataFromAPI } from "./api";
 
 export function renderMainPage() {
   let appEl = document.querySelector(".app");
@@ -22,33 +23,54 @@ export function renderMainPage() {
         placeholder="Nach Stadt suchen..."
       />
       <div class="saved-weather">
-        <div class="weather-tile" data-weather-id="575184">
-          <div class="weather-tile__infos-top">
-            <div class="weather-tile__infos-topleft">
-              <h2 class="weather-tile__city">Dresden</h2>
-              <p class="weather-tile__country">Germany</p>
-            </div>
-            <div class="weather-tile__infos-topright">
-              <p class="weather-tile__current-temp">22°</p>
-            </div>
-          </div>
-          <div class="weather-tile__infos-bottom">
-            <div class="weather-tile__infos-bottomleft">
-              <p class="weather-tile__condition">Sonnig</p>
-            </div>
-            <div class="weather-tile__infos-bottomright">
-              <p class="weather-tile__top-bottom-temp">H:21° T:11°</p>
-            </div>
-          </div>
-        </div>
+      </div>
 `;
   appEl.innerHTML = newHTML;
 }
 
-export function listenWeatherTile() {
-  const WeatherTileEl = document.querySelectorAll(".weather-tile");
+export async function renderWeatherTile(cityID) {
+  let data = await getDataFromAPI(cityID);
+  let savedWeatherEl = document.querySelector(".saved-weather");
+  let newHTML;
+  let code = data.current.condition.code;
+  let is_day = data.current.is_day;
 
-  WeatherTileEl.forEach((tile) =>
+  let imgUrl = getConditionImagePath(code, is_day);
+
+  newHTML = `<div class="weather-tile" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
+          <div class="weather-tile__infos-top">
+            <div class="weather-tile__infos-topleft">
+              <h2 class="weather-tile__city">${data.location.name}</h2>
+              <p class="weather-tile__country">${data.location.country}</p>
+            </div>
+            <div class="weather-tile__infos-topright">
+              <p class="weather-tile__current-temp">${Math.floor(
+                data.current.temp_c
+              )}°</p>
+            </div>
+          </div>
+          <div class="weather-tile__infos-bottom">
+            <div class="weather-tile__infos-bottomleft">
+              <p class="weather-tile__condition">${
+                data.current.condition.text
+              }</p>
+            </div>
+            <div class="weather-tile__infos-bottomright">
+              <p class="weather-tile__top-bottom-temp">H:${
+                data.forecast.forecastday[0].day.maxtemp_c
+              }° T:${data.forecast.forecastday[0].day.mintemp_c}°</p>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+  savedWeatherEl.innerHTML = newHTML;
+}
+
+export function listenWeatherTile() {
+  const weatherTileEl = document.querySelectorAll(".weather-tile");
+
+  weatherTileEl.forEach((tile) =>
     tile.addEventListener("click", () => {
       loadDetailedWeatherPage(tile.getAttribute("data-weather-id"));
     })
@@ -74,7 +96,7 @@ export async function setBackground() {
   let appEl = document.querySelector(".app--show-current-Weather");
 
   let imgUrl = getConditionImagePath(code, is_day);
-  appEl.style.backgroundImage = `url('${imgUrl}')`;
+  appEl.style.backgroundImage = `url(${imgUrl})`;
 }
 
 export function clearBackground() {

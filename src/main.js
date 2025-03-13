@@ -14,6 +14,7 @@ import {
   listenBackButton,
   listenFavoritButton,
   clearBackground,
+  renderWeatherTile,
 } from "./DomManipulation";
 
 export let currentWeather = { data: null };
@@ -22,6 +23,7 @@ export async function loadMainPage() {
   renderLoadingScreen();
   clearBackground();
   renderMainPage();
+  await renderWeatherTile(575184);
   listenWeatherTile();
 }
 export async function loadDetailedWeatherPage(cityID) {
