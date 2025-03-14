@@ -10,21 +10,27 @@ import {
   renderLoadingScreen,
   setBackground,
   renderMainPage,
-  listenWeatherTile,
   listenBackButton,
   listenFavoritButton,
   clearBackground,
-  renderWeatherTile,
+  renderSavedWeather,
 } from "./DomManipulation";
+import { loadFromLocalStorage } from "./localStorage";
 
 export let currentWeather = { data: null };
+export let storedWeather = [];
+
+export function loadStoredWeatherIDs() {
+  let data = [];
+  data = loadFromLocalStorage();
+  storedWeather = data;
+}
 
 export async function loadMainPage() {
   renderLoadingScreen();
   clearBackground();
   renderMainPage();
-  await renderWeatherTile(575184);
-  listenWeatherTile();
+  renderSavedWeather(storedWeather);
 }
 export async function loadDetailedWeatherPage(cityID) {
   renderLoadingScreen("Dresden");
@@ -60,5 +66,6 @@ export function dayNames(timestamp) {
   return day;
 }
 
+loadStoredWeatherIDs();
 loadMainPage();
 //loadDetailedWeatherPage("575184");

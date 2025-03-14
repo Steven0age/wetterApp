@@ -8,6 +8,7 @@ import {
 } from "./main";
 import { getConditionImagePath } from "./conditions";
 import { getDataFromAPI } from "./api";
+import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
 export function renderMainPage() {
   let appEl = document.querySelector(".app");
@@ -28,16 +29,28 @@ export function renderMainPage() {
   appEl.innerHTML = newHTML;
 }
 
+export async function renderSavedWeather(cityIDs) {
+  if (!cityIDs) {
+    let savedWeatherEl = document.querySelector(".saved-weather");
+    savedWeatherEl.innerHTML = `<p> Noch keine Favoriten gespeichert.</p>`;
+  } else {
+    // for each cityIDs --> api query and rendering
+    cityIDs.forEach((ID) => {
+      renderWeatherTile(ID);
+    });
+  }
+}
+
 export async function renderWeatherTile(cityID) {
   let data = await getDataFromAPI(cityID);
-  let savedWeatherEl = document.querySelector(".saved-weather");
   let newHTML;
   let code = data.current.condition.code;
   let is_day = data.current.is_day;
+  let savedWeatherEl = document.querySelector(".saved-weather");
 
   let imgUrl = getConditionImagePath(code, is_day);
 
-  newHTML = `<div class="weather-tile" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
+  newHTML += `<div class="weather-tile" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
           <div class="weather-tile__infos-top">
             <div class="weather-tile__infos-topleft">
               <h2 class="weather-tile__city">${data.location.name}</h2>
@@ -64,7 +77,8 @@ export async function renderWeatherTile(cityID) {
         </div>
       </div>`;
 
-  savedWeatherEl.innerHTML = newHTML;
+  savedWeatherEl.innerHTML += newHTML;
+  listenWeatherTile();
 }
 
 export function listenWeatherTile() {
@@ -86,7 +100,9 @@ export function listenFavoritButton() {
   const backButtonEl = document.querySelector(
     ".in-weather-navigation__favorit"
   );
-  backButtonEl.addEventListener("click", loadMainPage);
+  backButtonEl.addEventListener("click", () => {
+    saveToLocalStorage(575184);
+  });
 }
 
 export async function setBackground() {
