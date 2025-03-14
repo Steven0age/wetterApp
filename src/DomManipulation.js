@@ -5,6 +5,7 @@ import {
   dayNames,
   loadDetailedWeatherPage,
   loadMainPage,
+  saveCurrentWeather,
 } from "./main";
 import { getConditionImagePath } from "./conditions";
 import { getDataFromAPI } from "./api";
@@ -34,14 +35,15 @@ export async function renderSavedWeather(cityIDs) {
     let savedWeatherEl = document.querySelector(".saved-weather");
     savedWeatherEl.innerHTML = `<p> Noch keine Favoriten gespeichert.</p>`;
   } else {
-    // for each cityIDs --> api query and rendering
     cityIDs.forEach((ID) => {
+      console.log("ID =", ID);
       renderWeatherTile(ID);
     });
   }
 }
 
 export async function renderWeatherTile(cityID) {
+  console.log("renderWeatherTile gestartet mit ID:", cityID);
   let data = await getDataFromAPI(cityID);
   let newHTML;
   let code = data.current.condition.code;
@@ -50,7 +52,7 @@ export async function renderWeatherTile(cityID) {
 
   let imgUrl = getConditionImagePath(code, is_day);
 
-  newHTML += `<div class="weather-tile" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
+  newHTML = `<div class="weather-tile" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
           <div class="weather-tile__infos-top">
             <div class="weather-tile__infos-topleft">
               <h2 class="weather-tile__city">${data.location.name}</h2>
@@ -96,12 +98,12 @@ export function listenBackButton() {
   backButtonEl.addEventListener("click", loadMainPage);
 }
 
-export function listenFavoritButton() {
+export function listenFavoritButton(city) {
   const backButtonEl = document.querySelector(
     ".in-weather-navigation__favorit"
   );
   backButtonEl.addEventListener("click", () => {
-    saveToLocalStorage(575184);
+    saveCurrentWeather(city);
   });
 }
 
@@ -228,7 +230,7 @@ export async function renderCurrentWeather() {
 export async function renderHourlyForecast() {
   let data = await getCurrentWeather();
   let currentHourTimeStamp = await findCurrentHour();
-  console.log("currentHourTimeStamp", currentHourTimeStamp);
+  //console.log("currentHourTimeStamp", currentHourTimeStamp);
   let hourlyForecastListEl = document.querySelector(".hourly-forecast__list");
   let indexOfCurrentHour = data.forecast.forecastday[0].hour.findIndex((x) => {
     return x.time_epoch == currentHourTimeStamp;
@@ -286,10 +288,10 @@ export async function renderHourlyForecast() {
 export async function renderDailyForecast() {
   let data = await getCurrentWeather();
   let dailyForecastListEl = document.querySelector(".daily-forecast");
-  console.log(
-    "Max Temp heute= ",
-    data.forecast.forecastday[0].day.condition.icon
-  );
+  // console.log(
+  //   "Max Temp heute= ",
+  //   data.forecast.forecastday[0].day.condition.icon
+  // );
   let tomorrow = dayNames(data.forecast.forecastday[1].date_epoch);
   let dayAfterTomorrow = dayNames(data.forecast.forecastday[2].date_epoch);
 
@@ -384,7 +386,7 @@ export async function renderWeatherDetails() {
       value: `${Math.floor(data.forecast.forecastday[0].day.uv)}`,
     },
   ];
-  console.log("dataArr =", dataArr);
+  //console.log("dataArr =", dataArr);
 
   dataArr.forEach((a) => {
     newHTML += `
@@ -393,7 +395,6 @@ export async function renderWeatherDetails() {
                 <p class="detail-block__information">${a.value}</p>
               </div>`;
   });
-  //console.log("newHTML =", newHTML);
-  console.log("Moment =", moment("06:34 PM", "h:mm:sss A").format("HH:mm"));
+  //console.log("Moment =", moment("06:34 PM", "h:mm:sss A").format("HH:mm"));
   weatherDetailsEl.innerHTML = newHTML;
 }

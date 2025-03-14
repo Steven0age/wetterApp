@@ -1,6 +1,5 @@
-export function saveToLocalStorage(cityID) {
-  let savedWeather = [cityID];
-  const JSONNWeather = JSON.stringify(savedWeather);
+export function saveToLocalStorage(weatherArr) {
+  const JSONNWeather = JSON.stringify(weatherArr);
   localStorage.setItem("savedWeather", JSONNWeather);
 }
 

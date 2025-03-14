@@ -15,7 +15,7 @@ import {
   clearBackground,
   renderSavedWeather,
 } from "./DomManipulation";
-import { loadFromLocalStorage } from "./localStorage";
+import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
 export let currentWeather = { data: null };
 export let storedWeather = [];
@@ -33,7 +33,7 @@ export async function loadMainPage() {
   renderSavedWeather(storedWeather);
 }
 export async function loadDetailedWeatherPage(cityID) {
-  renderLoadingScreen("Dresden");
+  renderLoadingScreen("PLATZHALTER");
 
   let newWeatherData = await getDataFromAPI(cityID);
   currentWeather = newWeatherData;
@@ -45,11 +45,23 @@ export async function loadDetailedWeatherPage(cityID) {
   renderDailyForecast();
   renderWeatherDetails();
   listenBackButton();
-  listenFavoritButton();
+  listenFavoritButton(currentWeather.location.name);
 }
 
 export function getCurrentWeather() {
   return currentWeather;
+}
+
+export function saveCurrentWeather(cityID) {
+  console.log("storedWeather =", storedWeather);
+  if (!storedWeather) {
+    storedWeather = cityID;
+    console.log("storedWeather2 =", storedWeather);
+  } else {
+    storedWeather.push(cityID);
+  }
+  saveToLocalStorage(storedWeather);
+  console.log("storedWeather3 =", storedWeather);
 }
 
 export function findCurrentHour() {
@@ -69,3 +81,4 @@ export function dayNames(timestamp) {
 loadStoredWeatherIDs();
 loadMainPage();
 //loadDetailedWeatherPage("575184");
+//loadDetailedWeatherPage("2801268");
