@@ -35,15 +35,13 @@ export async function renderSavedWeather(cityIDs) {
     let savedWeatherEl = document.querySelector(".saved-weather");
     savedWeatherEl.innerHTML = `<p> Noch keine Favoriten gespeichert.</p>`;
   } else {
-    cityIDs.forEach((ID) => {
-      console.log("ID =", ID);
-      renderWeatherTile(ID);
-    });
+    for (const ID of cityIDs) {
+      await renderWeatherTile(ID);
+    }
   }
 }
 
 export async function renderWeatherTile(cityID) {
-  console.log("renderWeatherTile gestartet mit ID:", cityID);
   let data = await getDataFromAPI(cityID);
   let newHTML;
   let code = data.current.condition.code;
