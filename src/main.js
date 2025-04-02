@@ -1,6 +1,6 @@
 import "./style.scss";
 import "./normalize.scss";
-import { getDataFromAPI } from "./api";
+import { getDataFromAPI, getSearchResultsFromAPI } from "./api";
 import {
   renderCurrentWeather,
   renderHourlyForecast,
@@ -19,6 +19,7 @@ import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
 export let currentWeather = { data: null };
 export let storedWeather = [];
+const delayedInput = debounce(loadSearchResults, 1000);
 
 export function loadStoredWeatherIDs() {
   let data = [];
@@ -78,7 +79,35 @@ export function dayNames(timestamp) {
   return day;
 }
 
+function addListenerToSearchBar() {
+  let inputFieldEl = document.querySelector(".search-bar");
+  inputFieldEl.addEventListener("input", () => {
+    delayedInput();
+  });
+}
+
+export async function loadSearchResults() {
+  let searchPhrase = "";
+  searchPhrase = document.querySelector(".search-bar").value;
+  console.log("searchPhrase =", searchPhrase);
+
+  let searchResults = await getSearchResultsFromAPI(searchPhrase);
+  console.log("searchResults =", searchResults);
+}
+
+function debounce(callback, delay) {
+  let timer;
+  return function () {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      callback();
+    }, delay);
+  };
+}
+
 loadStoredWeatherIDs();
 loadMainPage();
+addListenerToSearchBar();
+//searchInput();
 //loadDetailedWeatherPage("575184");
 //loadDetailedWeatherPage("2801268");

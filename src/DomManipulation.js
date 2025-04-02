@@ -9,7 +9,6 @@ import {
 } from "./main";
 import { getConditionImagePath } from "./conditions";
 import { getDataFromAPI } from "./api";
-import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
 export function renderMainPage() {
   let appEl = document.querySelector(".app");
