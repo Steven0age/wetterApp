@@ -19,6 +19,7 @@ import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
 export let currentWeather = { data: null };
 export let storedWeather = [];
+export let searchedWeather = [];
 const delayedInput = debounce(loadSearchResults, 1000);
 
 export function loadStoredWeatherIDs() {
@@ -89,10 +90,12 @@ function addListenerToSearchBar() {
 export async function loadSearchResults() {
   let searchPhrase = "";
   searchPhrase = document.querySelector(".search-bar").value;
-  console.log("searchPhrase =", searchPhrase);
+  //console.log("searchPhrase =", searchPhrase);
 
   let searchResults = await getSearchResultsFromAPI(searchPhrase);
   console.log("searchResults =", searchResults);
+  searchedWeather = searchResults;
+  console.log("searchedWeather =", searchedWeather);
 }
 
 function debounce(callback, delay) {
@@ -106,8 +109,7 @@ function debounce(callback, delay) {
 }
 
 loadStoredWeatherIDs();
-loadMainPage();
+//loadMainPage();
 addListenerToSearchBar();
-//searchInput();
 //loadDetailedWeatherPage("575184");
 //loadDetailedWeatherPage("2801268");

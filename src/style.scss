@@ -77,12 +77,35 @@ body {
 }
 
 .search-bar {
-  border-radius: 8px;
-  padding: 0.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.581);
-  background-color: #f0f8ff;
-  font-family: Inter, Helvetica;
-  font-size: 1rem;
+  position: relative;
+
+  &__input {
+    width: 100%;
+    border-radius: 8px;
+    padding: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.581);
+    background-color: #f0f8ff;
+    font-family: Inter, Helvetica;
+    font-size: 1rem;
+  }
+}
+
+.search-result {
+  position: absolute;
+  width: 100%;
+  background-color: #353232;
+
+  &__single-result {
+    padding: 0.5rem;
+    border-top: solid 1px #515151;
+
+    &:hover {
+      background-color: #515151;
+    }
+  }
+  &__country {
+    font-size: 0.85rem;
+  }
 }
 
 .saved-weather {

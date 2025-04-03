@@ -16,13 +16,17 @@ export function renderMainPage() {
   newHTML = `
 <div class="main-menu">
         <h1 class="main-menu__headline">Wetter</h1>
-        <p class="main-menu_options">Bearbeiten</p>
+        <p class="main-menu__options">Bearbeiten</p>
       </div>
-      <input
-        class="search-bar"
-        type="search"
-        placeholder="Nach Stadt suchen..."
-      />
+      <div class="search-bar">
+        <input
+          class="search-bar__input"
+          type="search"
+          placeholder="Nach Stadt suchen..."
+        />
+        <div class="search-result">
+        </div>
+      </div>
       <div class="saved-weather">
       </div>
 `;

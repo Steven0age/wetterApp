@@ -10,13 +10,33 @@
     <div class="app">
       <div class="main-menu">
         <h1 class="main-menu__headline">Wetter</h1>
-        <p class="main-menu_options">Bearbeiten</p>
+        <p class="main-menu__options">Bearbeiten</p>
       </div>
-      <input
-        class="search-bar"
-        type="search"
-        placeholder="Nach Stadt suchen..."
-      />
+      <div class="search-bar">
+        <input
+          class="search-bar__input"
+          type="search"
+          placeholder="Nach Stadt suchen..."
+        />
+        <div class="search-result">
+          <div class="search-result__single-result">
+            <p class="search-result__city">Mannheim</p>
+            <p class="search-result__country">Germany</p>
+          </div>
+          <div class="search-result__single-result">
+            <p class="search-result__city">Mannargudi</p>
+            <p class="search-result__country">India</p>
+          </div>
+          <div class="search-result__single-result">
+            <p class="search-result__city">Mannarakkat</p>
+            <p class="search-result__country">India</p>
+          </div>
+          <div class="search-result__single-result">
+            <p class="search-result__city">Mannum</p>
+            <p class="search-result__country">Australia</p>
+          </div>
+        </div>
+      </div>
       <div class="saved-weather" data-weather-id="575184">
         <div class="weather-tile">
           <div class="weather-tile__infos-top">
