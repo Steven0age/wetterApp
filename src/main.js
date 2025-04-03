@@ -14,6 +14,7 @@ import {
   listenFavoritButton,
   clearBackground,
   renderSavedWeather,
+  renderSearchResults,
 } from "./DomManipulation";
 import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
@@ -89,13 +90,14 @@ function addListenerToSearchBar() {
 
 export async function loadSearchResults() {
   let searchPhrase = "";
-  searchPhrase = document.querySelector(".search-bar").value;
+  searchPhrase = document.querySelector(".search-bar__input").value;
   //console.log("searchPhrase =", searchPhrase);
 
   let searchResults = await getSearchResultsFromAPI(searchPhrase);
   console.log("searchResults =", searchResults);
   searchedWeather = searchResults;
   console.log("searchedWeather =", searchedWeather);
+  renderSearchResults(searchResults);
 }
 
 function debounce(callback, delay) {
@@ -109,7 +111,7 @@ function debounce(callback, delay) {
 }
 
 loadStoredWeatherIDs();
-//loadMainPage();
+loadMainPage();
 addListenerToSearchBar();
 //loadDetailedWeatherPage("575184");
 //loadDetailedWeatherPage("2801268");

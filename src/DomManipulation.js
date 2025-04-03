@@ -399,3 +399,17 @@ export async function renderWeatherDetails() {
   //console.log("Moment =", moment("06:34 PM", "h:mm:sss A").format("HH:mm"));
   weatherDetailsEl.innerHTML = newHTML;
 }
+
+export async function renderSearchResults(apiResults) {
+  console.log("function renderSearchResults gefeuert");
+  let searchResultsEl = document.querySelector(".search-result");
+  let newHTML = "";
+  apiResults.forEach((a) => {
+    newHTML += `
+  <div class="search-result__single-result" data-city-id="${a.id}">
+            <p class="search-result__city">${a.name}</p>
+            <p class="search-result__country">${a.country}</p>
+          </div>`;
+  });
+  searchResultsEl.innerHTML = newHTML;
+}
