@@ -108,6 +108,19 @@ export function listenFavoritButton(city) {
   });
 }
 
+function listenSearchResults() {
+  const searchResultsEl = document.querySelectorAll(
+    ".search-result__single-result"
+  );
+
+  searchResultsEl.forEach((result) =>
+    result.addEventListener("click", () => {
+      console.log("geklickte ID =", result.getAttribute("data-city-id"));
+      loadDetailedWeatherPage(result.getAttribute("data-city-id"));
+    })
+  );
+}
+
 export async function setBackground() {
   let data = await getCurrentWeather();
   let code = data.current.condition.code;
@@ -149,6 +162,7 @@ export function renderLoadingScreen(city = null) {
   }
   appEl.innerHTML = newHTML;
 }
+
 export async function renderWeatherForecastPage() {
   let appEl = document.querySelector(".app");
   appEl.classList.add("app--show-current-Weather");
@@ -402,7 +416,7 @@ export async function renderWeatherDetails() {
 
 export async function renderSearchResults(apiResults) {
   console.log("function renderSearchResults gefeuert");
-  let searchResultsEl = document.querySelector(".search-result");
+  const searchResultsEl = document.querySelector(".search-result");
   let newHTML = "";
   apiResults.forEach((a) => {
     newHTML += `
@@ -412,4 +426,5 @@ export async function renderSearchResults(apiResults) {
           </div>`;
   });
   searchResultsEl.innerHTML = newHTML;
+  listenSearchResults();
 }

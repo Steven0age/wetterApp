@@ -34,6 +34,7 @@ export async function loadMainPage() {
   clearBackground();
   renderMainPage();
   renderSavedWeather(storedWeather);
+  addListenerToSearchBar();
 }
 export async function loadDetailedWeatherPage(cityID) {
   renderLoadingScreen("PLATZHALTER");
@@ -112,6 +113,5 @@ function debounce(callback, delay) {
 
 loadStoredWeatherIDs();
 loadMainPage();
-addListenerToSearchBar();
 //loadDetailedWeatherPage("575184");
 //loadDetailedWeatherPage("2801268");
