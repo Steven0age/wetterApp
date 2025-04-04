@@ -62,7 +62,7 @@ export function getCurrentWeather() {
 export function saveCurrentWeather(cityID) {
   console.log("storedWeather =", storedWeather);
   if (!storedWeather) {
-    storedWeather = cityID;
+    storedWeather = [cityID];
     console.log("storedWeather2 =", storedWeather);
   } else {
     storedWeather.push(cityID);
