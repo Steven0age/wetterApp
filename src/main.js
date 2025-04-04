@@ -15,6 +15,7 @@ import {
   clearBackground,
   renderSavedWeather,
   renderSearchResults,
+  listenOptionsParagraph,
 } from "./DomManipulation";
 import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
@@ -35,7 +36,9 @@ export async function loadMainPage() {
   renderMainPage();
   renderSavedWeather(storedWeather);
   addListenerToSearchBar();
+  listenOptionsParagraph();
 }
+
 export async function loadDetailedWeatherPage(cityID) {
   renderLoadingScreen("PLATZHALTER");
 
@@ -82,7 +85,7 @@ export function dayNames(timestamp) {
   return day;
 }
 
-function addListenerToSearchBar() {
+export function addListenerToSearchBar() {
   let inputFieldEl = document.querySelector(".search-bar");
   inputFieldEl.addEventListener("input", () => {
     delayedInput();

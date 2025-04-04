@@ -1,4 +1,4 @@
-import moment from "moment/moment";
+import { moment } from "moment/moment";
 import {
   getCurrentWeather,
   findCurrentHour,
@@ -6,9 +6,12 @@ import {
   loadDetailedWeatherPage,
   loadMainPage,
   saveCurrentWeather,
+  storedWeather,
+  addListenerToSearchBar,
 } from "./main";
 import { getConditionImagePath } from "./conditions";
 import { getDataFromAPI } from "./api";
+import { saveToLocalStorage } from "./localStorage";
 
 export function renderMainPage() {
   let appEl = document.querySelector(".app");
@@ -53,7 +56,25 @@ export async function renderWeatherTile(cityID) {
 
   let imgUrl = getConditionImagePath(code, is_day);
 
-  newHTML = `<div class="weather-tile" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
+  newHTML = `<div class="weather-tile">
+          <div class="weather-tile__icon weather-tile__icon--hide">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="weather-tile__remove-icon"
+              data-weather-id="${cityID}"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </div>
+  <div class="weather-tile__box" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
           <div class="weather-tile__infos-top">
             <div class="weather-tile__infos-topleft">
               <h2 class="weather-tile__city">${data.location.name}</h2>
@@ -78,18 +99,35 @@ export async function renderWeatherTile(cityID) {
             </div>
           </div>
         </div>
+      </div>
       </div>`;
 
   savedWeatherEl.innerHTML += newHTML;
-  listenWeatherTile();
+  listenWeatherTileBox();
 }
 
-export function listenWeatherTile() {
-  const weatherTileEl = document.querySelectorAll(".weather-tile");
+export function listenOptionsParagraph() {
+  const optionsEl = document.querySelector(".main-menu__options");
 
-  weatherTileEl.forEach((tile) =>
-    tile.addEventListener("click", () => {
-      loadDetailedWeatherPage(tile.getAttribute("data-weather-id"));
+  optionsEl.addEventListener("click", showHideOptions);
+}
+
+export function listenRemoveIcon() {
+  const removeIconEl = document.querySelectorAll(".weather-tile__remove-icon");
+
+  removeIconEl.forEach((el) => {
+    el.addEventListener("click", () => {
+      removeFavorit(el.getAttribute("data-weather-id"));
+    });
+  });
+}
+
+export function listenWeatherTileBox() {
+  const weatherTileBoxEl = document.querySelectorAll(".weather-tile__box");
+
+  weatherTileBoxEl.forEach((box) =>
+    box.addEventListener("click", () => {
+      loadDetailedWeatherPage(box.getAttribute("data-weather-id"));
     })
   );
 }
@@ -216,6 +254,7 @@ export async function renderWeatherForecastPage() {
           `;
   appEl.innerHTML = newHTML;
 }
+
 export async function renderCurrentWeather() {
   let currentWeatherEl = document.querySelector(".current-weather");
   let hourlyForecastEl = document.querySelector(".hourly-forecast");
@@ -427,4 +466,35 @@ export async function renderSearchResults(apiResults) {
   });
   searchResultsEl.innerHTML = newHTML;
   listenSearchResults();
+}
+
+function showHideOptions() {
+  const optionsEl = document.querySelector(".main-menu__options");
+  const weatherTileIconEl = document.querySelectorAll(".weather-tile__icon");
+
+  if (optionsEl.innerHTML == "Bearbeiten") {
+    optionsEl.innerHTML = "Fertig";
+    weatherTileIconEl.forEach((el) => {
+      el.classList.remove("weather-tile__icon--hide");
+    });
+    listenRemoveIcon();
+  } else {
+    optionsEl.innerHTML = "Bearbeiten";
+    weatherTileIconEl.forEach((el) => {
+      el.classList.add("weather-tile__icon--hide");
+    });
+  }
+}
+
+function removeFavorit(cityID) {
+  console.log("removeFavorit hat gefeuert! ID=", cityID);
+  console.log("storedWeather lautet", storedWeather);
+  let index = storedWeather.findIndex((x) => {
+    return x == cityID;
+  });
+  console.log("index lautet", index);
+  storedWeather.splice(index, 1);
+  console.log("storedWeather lautet jetzt", storedWeather);
+  saveToLocalStorage(storedWeather);
+  loadMainPage();
 }
