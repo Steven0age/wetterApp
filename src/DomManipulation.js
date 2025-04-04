@@ -99,12 +99,12 @@ export function listenBackButton() {
   backButtonEl.addEventListener("click", loadMainPage);
 }
 
-export function listenFavoritButton(city) {
+export function listenFavoritButton(cityID) {
   const backButtonEl = document.querySelector(
     ".in-weather-navigation__favorit"
   );
   backButtonEl.addEventListener("click", () => {
-    saveCurrentWeather(city);
+    saveCurrentWeather(cityID);
   });
 }
 

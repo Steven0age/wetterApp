@@ -49,7 +49,7 @@ export async function loadDetailedWeatherPage(cityID) {
   renderDailyForecast();
   renderWeatherDetails();
   listenBackButton();
-  listenFavoritButton(currentWeather.location.name);
+  listenFavoritButton(cityID);
 }
 
 export function getCurrentWeather() {
