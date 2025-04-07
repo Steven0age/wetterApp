@@ -74,7 +74,7 @@ export async function renderWeatherTile(cityID) {
               />
             </svg>
           </div>
-  <div class="weather-tile__box" style="background-image:url(${imgUrl})">
+  <div class="weather-tile__box" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
           <div class="weather-tile__infos-top">
             <div class="weather-tile__infos-topleft">
               <h2 class="weather-tile__city">${data.location.name}</h2>
