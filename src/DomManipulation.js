@@ -117,7 +117,7 @@ export function listenRemoveIcon() {
 
   removeIconEl.forEach((el) => {
     el.addEventListener("click", () => {
-      removeFavorit(el.getAttribute("data-weather-id"));
+      clickRemoveBtn(el.getAttribute("data-weather-id"));
     });
   });
 }
@@ -142,7 +142,7 @@ export function listenFavoritButton(cityID) {
     ".in-weather-navigation__favorit"
   );
   backButtonEl.addEventListener("click", () => {
-    saveCurrentWeather(cityID);
+    clickFavoritBtn(cityID);
   });
 }
 
@@ -486,6 +486,13 @@ function showHideOptions() {
   }
 }
 
+function clickRemoveBtn(cityID) {
+  removeFavorit(cityID);
+
+  const el = document.querySelector(`[data-weather-id="${cityID}"]`);
+  el.classList.add("weather-tile--hide");
+}
+
 function removeFavorit(cityID) {
   //console.log("removeFavorit hat gefeuert! ID=", cityID);
   //console.log("storedWeather lautet", storedWeather);
@@ -496,7 +503,35 @@ function removeFavorit(cityID) {
   storedWeather.splice(index, 1);
   //console.log("storedWeather lautet jetzt", storedWeather);
   saveToLocalStorage(storedWeather);
+}
 
-  const el = document.querySelector(`[data-weather-id="${cityID}"]`);
-  el.classList.add("weather-tile--hide");
+export function checkFavoritBtn(cityID) {
+  console.log("checkFavoritBtn ausgeführt");
+  let favoritEl = document.querySelector(".in-weather-navigation__favorit");
+  let cityIDIndex = storedWeather.findIndex((x) => {
+    return x == cityID;
+  });
+  //console.log("cityIDIndex lautet", cityIDIndex);
+  if (cityIDIndex >= 0) {
+    console.log("favorit existiert bereits");
+    favoritEl.setAttribute("fill", "currentColor");
+    favoritEl.classList.add("in-weather-navigation__favorit--active");
+  } else {
+    console.log("favorit existiert nicht");
+    favoritEl.setAttribute("fill", "none");
+    favoritEl.classList.remove("in-weather-navigation__favorit--active");
+  }
+}
+
+export function clickFavoritBtn(cityID) {
+  console.log("clickFavoritBtn ausgelöst");
+  let cityIDIndex = storedWeather.findIndex((x) => {
+    return x == cityID;
+  });
+  if (cityIDIndex == -1) {
+    saveCurrentWeather(cityID);
+  } else {
+    removeFavorit(cityID);
+  }
+  checkFavoritBtn(cityID);
 }

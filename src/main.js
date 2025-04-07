@@ -16,6 +16,7 @@ import {
   renderSavedWeather,
   renderSearchResults,
   listenOptionsParagraph,
+  checkFavoritBtn,
 } from "./DomManipulation";
 import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
@@ -46,6 +47,7 @@ export async function loadDetailedWeatherPage(cityID) {
   currentWeather = newWeatherData;
 
   renderWeatherForecastPage();
+  checkFavoritBtn(cityID);
   setBackground();
   renderCurrentWeather();
   renderHourlyForecast();
@@ -60,15 +62,15 @@ export function getCurrentWeather() {
 }
 
 export function saveCurrentWeather(cityID) {
-  console.log("storedWeather =", storedWeather);
+  //console.log("storedWeather =", storedWeather);
   if (!storedWeather) {
     storedWeather = [cityID];
-    console.log("storedWeather2 =", storedWeather);
+    //console.log("storedWeather2 =", storedWeather);
   } else {
     storedWeather.push(cityID);
   }
   saveToLocalStorage(storedWeather);
-  console.log("storedWeather3 =", storedWeather);
+  //console.log("storedWeather3 =", storedWeather);
 }
 
 export function findCurrentHour() {

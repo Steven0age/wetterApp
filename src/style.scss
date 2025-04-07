@@ -247,6 +247,10 @@ body {
   &__favorit {
     width: 1.8rem;
     cursor: pointer;
+
+    &--active {
+      color: yellow;
+    }
   }
 }
 
