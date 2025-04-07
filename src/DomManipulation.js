@@ -7,7 +7,6 @@ import {
   loadMainPage,
   saveCurrentWeather,
   storedWeather,
-  addListenerToSearchBar,
 } from "./main";
 import { getConditionImagePath } from "./conditions";
 import { getDataFromAPI } from "./api";
@@ -56,7 +55,10 @@ export async function renderWeatherTile(cityID) {
 
   let imgUrl = getConditionImagePath(code, is_day);
 
-  newHTML = `<div class="weather-tile" data-weather-id="${cityID}">
+  newHTML = `<div class="weather-tile" 
+              data-city-id="${cityID}" 
+              data-city-name="${data.location.name}"
+              >
           <div class="weather-tile__icon weather-tile__icon--hide">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +67,7 @@ export async function renderWeatherTile(cityID) {
               stroke-width="1.5"
               stroke="currentColor"
               class="weather-tile__remove-icon"
-              data-weather-id="${cityID}"
+              data-city-id="${cityID}"
             >
               <path
                 stroke-linecap="round"
@@ -74,7 +76,9 @@ export async function renderWeatherTile(cityID) {
               />
             </svg>
           </div>
-  <div class="weather-tile__box" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
+  <div class="weather-tile__box" style="background-image:url(${imgUrl})" data-city-id="${cityID}"data-city-name="${
+    data.location.name
+  }">
           <div class="weather-tile__infos-top">
             <div class="weather-tile__infos-topleft">
               <h2 class="weather-tile__city">${data.location.name}</h2>
@@ -117,7 +121,7 @@ export function listenRemoveIcon() {
 
   removeIconEl.forEach((el) => {
     el.addEventListener("click", () => {
-      clickRemoveBtn(el.getAttribute("data-weather-id"));
+      clickRemoveBtn(el.getAttribute("data-city-id"));
     });
   });
 }
@@ -127,7 +131,10 @@ export function listenWeatherTileBox() {
 
   weatherTileBoxEl.forEach((box) =>
     box.addEventListener("click", () => {
-      loadDetailedWeatherPage(box.getAttribute("data-weather-id"));
+      loadDetailedWeatherPage(
+        box.getAttribute("data-city-id"),
+        box.getAttribute("data-city-name")
+      );
     })
   );
 }
@@ -154,7 +161,10 @@ function listenSearchResults() {
   searchResultsEl.forEach((result) =>
     result.addEventListener("click", () => {
       console.log("geklickte ID =", result.getAttribute("data-city-id"));
-      loadDetailedWeatherPage(result.getAttribute("data-city-id"));
+      loadDetailedWeatherPage(
+        result.getAttribute("data-city-id"),
+        result.getAttribute("data-city-name")
+      );
     })
   );
 }
@@ -459,7 +469,7 @@ export async function renderSearchResults(apiResults) {
   let newHTML = "";
   apiResults.forEach((a) => {
     newHTML += `
-  <div class="search-result__single-result" data-city-id="${a.id}">
+  <div class="search-result__single-result" data-city-id="${a.id}" data-city-name="${a.name}">
             <p class="search-result__city">${a.name}</p>
             <p class="search-result__country">${a.country}</p>
           </div>`;
@@ -489,7 +499,7 @@ function showHideOptions() {
 function clickRemoveBtn(cityID) {
   removeFavorit(cityID);
 
-  const el = document.querySelector(`[data-weather-id="${cityID}"]`);
+  const el = document.querySelector(`[data-city-id="${cityID}"]`);
   el.classList.add("weather-tile--hide");
 }
 

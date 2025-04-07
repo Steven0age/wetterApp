@@ -34,14 +34,15 @@ export function loadStoredWeatherIDs() {
 export async function loadMainPage() {
   renderLoadingScreen();
   clearBackground();
-  renderMainPage();
-  renderSavedWeather(storedWeather);
+  await loadStoredWeatherIDs();
+  await renderMainPage();
+  await renderSavedWeather(storedWeather);
   addListenerToSearchBar();
   listenOptionsParagraph();
 }
 
-export async function loadDetailedWeatherPage(cityID) {
-  renderLoadingScreen("PLATZHALTER");
+export async function loadDetailedWeatherPage(cityID, cityName) {
+  renderLoadingScreen(cityName);
 
   let newWeatherData = await getDataFromAPI(cityID);
   currentWeather = newWeatherData;
@@ -116,7 +117,7 @@ function debounce(callback, delay) {
   };
 }
 
-loadStoredWeatherIDs();
+//loadStoredWeatherIDs();
 loadMainPage();
 //loadDetailedWeatherPage("575184");
 //loadDetailedWeatherPage("2801268");
