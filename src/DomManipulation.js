@@ -56,7 +56,7 @@ export async function renderWeatherTile(cityID) {
 
   let imgUrl = getConditionImagePath(code, is_day);
 
-  newHTML = `<div class="weather-tile">
+  newHTML = `<div class="weather-tile" data-weather-id="${cityID}">
           <div class="weather-tile__icon weather-tile__icon--hide">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +74,7 @@ export async function renderWeatherTile(cityID) {
               />
             </svg>
           </div>
-  <div class="weather-tile__box" style="background-image:url(${imgUrl})" data-weather-id="${cityID}">
+  <div class="weather-tile__box" style="background-image:url(${imgUrl})">
           <div class="weather-tile__infos-top">
             <div class="weather-tile__infos-topleft">
               <h2 class="weather-tile__city">${data.location.name}</h2>
@@ -487,14 +487,16 @@ function showHideOptions() {
 }
 
 function removeFavorit(cityID) {
-  console.log("removeFavorit hat gefeuert! ID=", cityID);
-  console.log("storedWeather lautet", storedWeather);
+  //console.log("removeFavorit hat gefeuert! ID=", cityID);
+  //console.log("storedWeather lautet", storedWeather);
   let index = storedWeather.findIndex((x) => {
     return x == cityID;
   });
-  console.log("index lautet", index);
+  //console.log("index lautet", index);
   storedWeather.splice(index, 1);
-  console.log("storedWeather lautet jetzt", storedWeather);
+  //console.log("storedWeather lautet jetzt", storedWeather);
   saveToLocalStorage(storedWeather);
-  loadMainPage();
+
+  const el = document.querySelector(`[data-weather-id="${cityID}"]`);
+  el.classList.add("weather-tile--hide");
 }

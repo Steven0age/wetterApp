@@ -123,6 +123,10 @@ body {
   @include centered-row();
   gap: 1rem;
 
+  &--hide {
+    display: none;
+  }
+
   &__icon {
     width: 1.5rem;
 
