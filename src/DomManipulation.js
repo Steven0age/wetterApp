@@ -12,9 +12,10 @@ import { getConditionImagePath } from "./conditions";
 import { getDataFromAPI } from "./api";
 import { saveToLocalStorage } from "./localStorage";
 
-export function renderMainPage() {
+export async function renderMainPage(cityIDs) {
   let appEl = document.querySelector(".app");
   let newHTML;
+  let tileHTML = await renderSavedWeather(cityIDs);
   newHTML = `
 <div class="main-menu">
         <h1 class="main-menu__headline">Wetter</h1>
@@ -29,29 +30,30 @@ export function renderMainPage() {
         <div class="search-result">
         </div>
       </div>
-      <div class="saved-weather">
+      <div class="saved-weather">${tileHTML}
       </div>
 `;
+
   appEl.innerHTML = newHTML;
 }
 
 export async function renderSavedWeather(cityIDs) {
   if (!cityIDs) {
-    let savedWeatherEl = document.querySelector(".saved-weather");
-    savedWeatherEl.innerHTML = `<p> Noch keine Favoriten gespeichert.</p>`;
+    return `<p> Noch keine Favoriten gespeichert.</p>`;
   } else {
+    let newHTML = [];
     for (const ID of cityIDs) {
-      await renderWeatherTile(ID);
+      newHTML += await renderWeatherTile(ID);
     }
+    return newHTML;
   }
 }
 
 export async function renderWeatherTile(cityID) {
   let data = await getDataFromAPI(cityID);
-  let newHTML;
+  let newHTML = [];
   let code = data.current.condition.code;
   let is_day = data.current.is_day;
-  let savedWeatherEl = document.querySelector(".saved-weather");
 
   let imgUrl = getConditionImagePath(code, is_day);
 
@@ -76,7 +78,7 @@ export async function renderWeatherTile(cityID) {
               />
             </svg>
           </div>
-  <div class="weather-tile__box" style="background-image:url(${imgUrl})" data-city-id="${cityID}"data-city-name="${
+  <div class="weather-tile__box" style="background-image:url(${imgUrl})" data-city-id="${cityID}" data-city-name="${
     data.location.name
   }">
           <div class="weather-tile__infos-top">
@@ -103,11 +105,9 @@ export async function renderWeatherTile(cityID) {
             </div>
           </div>
         </div>
-      </div>
       </div>`;
 
-  savedWeatherEl.innerHTML += newHTML;
-  listenWeatherTileBox();
+  return newHTML;
 }
 
 export function listenOptionsParagraph() {

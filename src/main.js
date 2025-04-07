@@ -17,6 +17,7 @@ import {
   renderSearchResults,
   listenOptionsParagraph,
   checkFavoritBtn,
+  listenWeatherTileBox,
 } from "./DomManipulation";
 import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
@@ -35,8 +36,9 @@ export async function loadMainPage() {
   renderLoadingScreen();
   clearBackground();
   await loadStoredWeatherIDs();
-  await renderMainPage();
-  await renderSavedWeather(storedWeather);
+  await renderMainPage(storedWeather);
+  //await renderSavedWeather(storedWeather);
+  listenWeatherTileBox();
   addListenerToSearchBar();
   listenOptionsParagraph();
 }
