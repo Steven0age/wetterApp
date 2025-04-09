@@ -240,9 +240,10 @@ export async function renderHourlyForecast() {
   for (i += 1; i < 24; i++) {
     newHTML += ` 
       <div class="forecast-vertical">
-        <p class="forecast-vertical__time">${new Date(
-          data.forecast.forecastday[0].hour[i].time_epoch * 1000
-        ).getHours()} Uhr</p>
+        <p class="forecast-vertical__time">
+        ${
+          new Date(data.forecast.forecastday[0].hour[i].time).getHours() || 24
+        } Uhr</p>
         <p class="forecast-vertical__symbol"><img src="${
           data.forecast.forecastday[0].hour[i].condition.icon
         }" alt="${data.forecast.forecastday[0].hour[i].condition.text}"></p>
@@ -256,9 +257,10 @@ export async function renderHourlyForecast() {
     for (let x = 0; x < 24 - maxLoopsToday; x++) {
       newHTML += `
         <div class="forecast-vertical">
-          <p class="forecast-vertical__time">${new Date(
-            data.forecast.forecastday[1].hour[x].time_epoch * 1000
-          ).getHours()} Uhr</p>
+          <p class="forecast-vertical__time">
+          ${
+            new Date(data.forecast.forecastday[1].hour[x].time).getHours() || 24
+          } Uhr</p>
           <p class="forecast-vertical__symbol"><img src="${
             data.forecast.forecastday[1].hour[x].condition.icon
           }" alt="${data.forecast.forecastday[1].hour[x].condition.text}"></p>
