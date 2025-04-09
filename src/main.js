@@ -30,6 +30,9 @@ const delayedInput = debounce(loadSearchResults, 500);
 function loadStoredWeatherIDs() {
   let data = [];
   data = loadFromLocalStorage();
+  if (!data) {
+    return;
+  }
   storedWeather = data;
 }
 

@@ -38,7 +38,8 @@ export async function renderMainPage(cityIDs) {
 }
 
 async function renderSavedWeather(cityIDs) {
-  if (!cityIDs) {
+  console.log("cityIDs =", cityIDs);
+  if (cityIDs.length == 0) {
     return `<p> Noch keine Favoriten gespeichert.</p>`;
   } else {
     let newHTML = [];
@@ -56,7 +57,6 @@ async function renderWeatherTile(cityID) {
   let is_day = data.current.is_day;
 
   let imgUrl = getConditionImagePath(code, is_day);
-
   newHTML = `<div class="weather-tile" 
               data-city-id="${cityID}" 
               data-city-name="${data.location.name}"
@@ -483,7 +483,6 @@ export function clearBackground() {
 }
 
 function showSearchResults() {
-  event.stopPropagation();
   const searchResultsEl = document.querySelector(".search-result");
   searchResultsEl.classList.remove("search-result__single-result--hide");
 }
