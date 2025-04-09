@@ -4,7 +4,7 @@ export function getConditionImagePath(code, isDay = false) {
   if (!condition) return null;
 
   return (
-    "/wetterApp/src/assets/conditionImages/" +
+    "/wetterApp/public/assets/conditionImages/" +
     // condition[isDay ? "night" : "day"]
     condition[isDay ? "day" : "night"]
   );
