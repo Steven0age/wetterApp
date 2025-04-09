@@ -176,7 +176,7 @@ export async function setBackground() {
   let appEl = document.querySelector(".app--show-current-Weather");
 
   let imgUrl = getConditionImagePath(code, is_day);
-  appEl.style.backgroundImage = `url(${imgUrl})`;
+  appEl.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url(${imgUrl})`;
 }
 
 export function clearBackground() {
@@ -571,12 +571,3 @@ export function clickFavoritBtn(cityID) {
   }
   checkFavoritBtn(cityID);
 }
-
-// document.querySelector(".app").addEventListener("click", (event) => {
-//   console.log("Test clicked");
-//   console.log(event);
-//   if (document.querySelector(".favoriteList")) {
-//     document.querySelector(".inputField__element").value = "";
-//     document.querySelector(".suggestionList").innerHTML = "";
-//   }
-// });
