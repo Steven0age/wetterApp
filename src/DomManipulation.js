@@ -38,7 +38,6 @@ export async function renderMainPage(cityIDs) {
 }
 
 async function renderSavedWeather(cityIDs) {
-  console.log("cityIDs =", cityIDs);
   if (cityIDs.length == 0) {
     return `<p> Noch keine Favoriten gespeichert.</p>`;
   } else {
