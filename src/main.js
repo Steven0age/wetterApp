@@ -18,13 +18,15 @@ import {
   listenOptionsParagraph,
   checkFavoritBtn,
   listenWeatherTileBox,
+  listenClickAppEl,
+  listenClickSearchBar,
 } from "./DomManipulation";
 import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 
 export let currentWeather = { data: null };
 export let storedWeather = [];
 export let searchedWeather = [];
-const delayedInput = debounce(loadSearchResults, 1000);
+const delayedInput = debounce(loadSearchResults, 500);
 
 export function loadStoredWeatherIDs() {
   let data = [];
@@ -37,10 +39,11 @@ export async function loadMainPage() {
   clearBackground();
   await loadStoredWeatherIDs();
   await renderMainPage(storedWeather);
-  //await renderSavedWeather(storedWeather);
   listenWeatherTileBox();
   addListenerToSearchBar();
   listenOptionsParagraph();
+  listenClickSearchBar();
+  listenClickAppEl();
 }
 
 export async function loadDetailedWeatherPage(cityID, cityName) {

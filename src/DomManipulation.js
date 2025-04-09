@@ -478,6 +478,32 @@ export async function renderSearchResults(apiResults) {
   listenSearchResults();
 }
 
+export function showSearchResults() {
+  event.stopPropagation();
+  console.log("showSearchResults clicked");
+  const searchResultsEl = document.querySelector(".search-result");
+  searchResultsEl.classList.remove("search-result__single-result--hide");
+}
+
+export function hideSearchResults() {
+  console.log("hideSearchResults clicked");
+  const searchResultsEl = document.querySelector(".search-result");
+  searchResultsEl.classList.add("search-result__single-result--hide");
+}
+
+export function listenClickAppEl() {
+  const appEl = document.querySelector(".app");
+  appEl.addEventListener("click", hideSearchResults);
+}
+
+export function listenClickSearchBar() {
+  const searchBarEl = document.querySelector(".search-bar");
+  searchBarEl.addEventListener("click", (event) => {
+    event.stopPropagation();
+    showSearchResults();
+  });
+}
+
 function showHideOptions() {
   const optionsEl = document.querySelector(".main-menu__options");
   const weatherTileIconEl = document.querySelectorAll(".weather-tile__icon");
@@ -545,3 +571,12 @@ export function clickFavoritBtn(cityID) {
   }
   checkFavoritBtn(cityID);
 }
+
+// document.querySelector(".app").addEventListener("click", (event) => {
+//   console.log("Test clicked");
+//   console.log(event);
+//   if (document.querySelector(".favoriteList")) {
+//     document.querySelector(".inputField__element").value = "";
+//     document.querySelector(".suggestionList").innerHTML = "";
+//   }
+// });

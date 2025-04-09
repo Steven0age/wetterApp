@@ -104,6 +104,11 @@ body {
     padding: 0.5rem;
     border-top: solid 1px #515151;
 
+    &--hide {
+      //background-color: aquamarine;
+      display: none;
+    }
+
     &:hover {
       background-color: #515151;
     }
