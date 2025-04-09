@@ -37,7 +37,7 @@ export async function renderMainPage(cityIDs) {
   appEl.innerHTML = newHTML;
 }
 
-export async function renderSavedWeather(cityIDs) {
+async function renderSavedWeather(cityIDs) {
   if (!cityIDs) {
     return `<p> Noch keine Favoriten gespeichert.</p>`;
   } else {
@@ -49,7 +49,7 @@ export async function renderSavedWeather(cityIDs) {
   }
 }
 
-export async function renderWeatherTile(cityID) {
+async function renderWeatherTile(cityID) {
   let data = await getDataFromAPI(cityID);
   let newHTML = [];
   let code = data.current.condition.code;
@@ -108,81 +108,6 @@ export async function renderWeatherTile(cityID) {
       </div>`;
 
   return newHTML;
-}
-
-export function listenOptionsParagraph() {
-  const optionsEl = document.querySelector(".main-menu__options");
-
-  optionsEl.addEventListener("click", showHideOptions);
-}
-
-export function listenRemoveIcon() {
-  const removeIconEl = document.querySelectorAll(".weather-tile__remove-icon");
-
-  removeIconEl.forEach((el) => {
-    el.addEventListener("click", () => {
-      clickRemoveBtn(el.getAttribute("data-city-id"));
-    });
-  });
-}
-
-export function listenWeatherTileBox() {
-  const weatherTileBoxEl = document.querySelectorAll(".weather-tile__box");
-
-  weatherTileBoxEl.forEach((box) =>
-    box.addEventListener("click", () => {
-      loadDetailedWeatherPage(
-        box.getAttribute("data-city-id"),
-        box.getAttribute("data-city-name")
-      );
-    })
-  );
-}
-
-export function listenBackButton() {
-  const backButtonEl = document.querySelector(".in-weather-navigation__back");
-  backButtonEl.addEventListener("click", loadMainPage);
-}
-
-export function listenFavoritButton(cityID) {
-  const backButtonEl = document.querySelector(
-    ".in-weather-navigation__favorit"
-  );
-  backButtonEl.addEventListener("click", () => {
-    clickFavoritBtn(cityID);
-  });
-}
-
-function listenSearchResults() {
-  const searchResultsEl = document.querySelectorAll(
-    ".search-result__single-result"
-  );
-
-  searchResultsEl.forEach((result) =>
-    result.addEventListener("click", () => {
-      console.log("geklickte ID =", result.getAttribute("data-city-id"));
-      loadDetailedWeatherPage(
-        result.getAttribute("data-city-id"),
-        result.getAttribute("data-city-name")
-      );
-    })
-  );
-}
-
-export async function setBackground() {
-  let data = await getCurrentWeather();
-  let code = data.current.condition.code;
-  let is_day = data.current.is_day;
-  let appEl = document.querySelector(".app--show-current-Weather");
-
-  let imgUrl = getConditionImagePath(code, is_day);
-  appEl.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url(${imgUrl})`;
-}
-
-export function clearBackground() {
-  let appEl = document.querySelector(".app");
-  appEl.removeAttribute("style");
-  appEl.className = "app";
 }
 
 export function renderLoadingScreen(city = null) {
@@ -294,7 +219,6 @@ export async function renderCurrentWeather() {
 export async function renderHourlyForecast() {
   let data = await getCurrentWeather();
   let currentHourTimeStamp = await findCurrentHour();
-  //console.log("currentHourTimeStamp", currentHourTimeStamp);
   let hourlyForecastListEl = document.querySelector(".hourly-forecast__list");
   let indexOfCurrentHour = data.forecast.forecastday[0].hour.findIndex((x) => {
     return x.time_epoch == currentHourTimeStamp;
@@ -352,10 +276,6 @@ export async function renderHourlyForecast() {
 export async function renderDailyForecast() {
   let data = await getCurrentWeather();
   let dailyForecastListEl = document.querySelector(".daily-forecast");
-  // console.log(
-  //   "Max Temp heute= ",
-  //   data.forecast.forecastday[0].day.condition.icon
-  // );
   let tomorrow = dayNames(data.forecast.forecastday[1].date_epoch);
   let dayAfterTomorrow = dayNames(data.forecast.forecastday[2].date_epoch);
 
@@ -450,7 +370,6 @@ export async function renderWeatherDetails() {
       value: `${Math.floor(data.forecast.forecastday[0].day.uv)}`,
     },
   ];
-  //console.log("dataArr =", dataArr);
 
   dataArr.forEach((a) => {
     newHTML += `
@@ -459,12 +378,10 @@ export async function renderWeatherDetails() {
                 <p class="detail-block__information">${a.value}</p>
               </div>`;
   });
-  //console.log("Moment =", moment("06:34 PM", "h:mm:sss A").format("HH:mm"));
   weatherDetailsEl.innerHTML = newHTML;
 }
 
 export async function renderSearchResults(apiResults) {
-  console.log("function renderSearchResults gefeuert");
   const searchResultsEl = document.querySelector(".search-result");
   let newHTML = "";
   apiResults.forEach((a) => {
@@ -478,17 +395,62 @@ export async function renderSearchResults(apiResults) {
   listenSearchResults();
 }
 
-export function showSearchResults() {
-  event.stopPropagation();
-  console.log("showSearchResults clicked");
-  const searchResultsEl = document.querySelector(".search-result");
-  searchResultsEl.classList.remove("search-result__single-result--hide");
+export function listenOptionsParagraph() {
+  const optionsEl = document.querySelector(".main-menu__options");
+
+  optionsEl.addEventListener("click", showHideOptions);
 }
 
-export function hideSearchResults() {
-  console.log("hideSearchResults clicked");
-  const searchResultsEl = document.querySelector(".search-result");
-  searchResultsEl.classList.add("search-result__single-result--hide");
+function listenRemoveIcon() {
+  const removeIconEl = document.querySelectorAll(".weather-tile__remove-icon");
+
+  removeIconEl.forEach((el) => {
+    el.addEventListener("click", () => {
+      clickRemoveBtn(el.getAttribute("data-city-id"));
+    });
+  });
+}
+
+export function listenWeatherTileBox() {
+  const weatherTileBoxEl = document.querySelectorAll(".weather-tile__box");
+
+  weatherTileBoxEl.forEach((box) =>
+    box.addEventListener("click", () => {
+      loadDetailedWeatherPage(
+        box.getAttribute("data-city-id"),
+        box.getAttribute("data-city-name")
+      );
+    })
+  );
+}
+
+export function listenBackButton() {
+  const backButtonEl = document.querySelector(".in-weather-navigation__back");
+  backButtonEl.addEventListener("click", loadMainPage);
+}
+
+export function listenFavoritButton(cityID) {
+  const backButtonEl = document.querySelector(
+    ".in-weather-navigation__favorit"
+  );
+  backButtonEl.addEventListener("click", () => {
+    clickFavoritBtn(cityID);
+  });
+}
+
+function listenSearchResults() {
+  const searchResultsEl = document.querySelectorAll(
+    ".search-result__single-result"
+  );
+
+  searchResultsEl.forEach((result) =>
+    result.addEventListener("click", () => {
+      loadDetailedWeatherPage(
+        result.getAttribute("data-city-id"),
+        result.getAttribute("data-city-name")
+      );
+    })
+  );
 }
 
 export function listenClickAppEl() {
@@ -502,6 +464,33 @@ export function listenClickSearchBar() {
     event.stopPropagation();
     showSearchResults();
   });
+}
+
+export async function setBackground() {
+  let data = await getCurrentWeather();
+  let code = data.current.condition.code;
+  let is_day = data.current.is_day;
+  let appEl = document.querySelector(".app--show-current-Weather");
+
+  let imgUrl = getConditionImagePath(code, is_day);
+  appEl.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url(${imgUrl})`;
+}
+
+export function clearBackground() {
+  let appEl = document.querySelector(".app");
+  appEl.removeAttribute("style");
+  appEl.className = "app";
+}
+
+function showSearchResults() {
+  event.stopPropagation();
+  const searchResultsEl = document.querySelector(".search-result");
+  searchResultsEl.classList.remove("search-result__single-result--hide");
+}
+
+function hideSearchResults() {
+  const searchResultsEl = document.querySelector(".search-result");
+  searchResultsEl.classList.add("search-result__single-result--hide");
 }
 
 function showHideOptions() {
@@ -530,37 +519,28 @@ function clickRemoveBtn(cityID) {
 }
 
 function removeFavorit(cityID) {
-  //console.log("removeFavorit hat gefeuert! ID=", cityID);
-  //console.log("storedWeather lautet", storedWeather);
   let index = storedWeather.findIndex((x) => {
     return x == cityID;
   });
-  //console.log("index lautet", index);
   storedWeather.splice(index, 1);
-  //console.log("storedWeather lautet jetzt", storedWeather);
   saveToLocalStorage(storedWeather);
 }
 
 export function checkFavoritBtn(cityID) {
-  console.log("checkFavoritBtn ausgeführt");
   let favoritEl = document.querySelector(".in-weather-navigation__favorit");
   let cityIDIndex = storedWeather.findIndex((x) => {
     return x == cityID;
   });
-  //console.log("cityIDIndex lautet", cityIDIndex);
   if (cityIDIndex >= 0) {
-    console.log("favorit existiert bereits");
     favoritEl.setAttribute("fill", "currentColor");
     favoritEl.classList.add("in-weather-navigation__favorit--active");
   } else {
-    console.log("favorit existiert nicht");
     favoritEl.setAttribute("fill", "none");
     favoritEl.classList.remove("in-weather-navigation__favorit--active");
   }
 }
 
 export function clickFavoritBtn(cityID) {
-  console.log("clickFavoritBtn ausgelöst");
   let cityIDIndex = storedWeather.findIndex((x) => {
     return x == cityID;
   });

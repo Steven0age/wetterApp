@@ -3,12 +3,6 @@
   src: url(./assets/Inter/Inter-VariableFont_opsz.ttf);
 }
 
-$background-url: "./assets/conditionImages/day/snow_day.jpg";
-
-@mixin devBorder() {
-  border: 2px solid #00ffff;
-}
-
 @mixin centered-column() {
   display: flex;
   flex-direction: column;
@@ -64,7 +58,6 @@ body {
   overflow-y: scroll;
 
   &--show-current-Weather {
-    //background-image: url("./assets/conditionImages/day/snow_day.jpg");
     background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
       url("");
     background-size: cover;
@@ -106,7 +99,6 @@ body {
     border-top: solid 1px #515151;
 
     &--hide {
-      //background-color: aquamarine;
       display: none;
     }
 
@@ -114,6 +106,7 @@ body {
       background-color: #515151;
     }
   }
+
   &__country {
     font-size: 0.85rem;
   }
@@ -219,6 +212,7 @@ body {
     height: 8px;
     opacity: 0;
   }
+
   4.9% {
     top: 36px;
     left: 36px;
@@ -226,6 +220,7 @@ body {
     height: 8px;
     opacity: 0;
   }
+
   5% {
     top: 36px;
     left: 36px;
@@ -233,6 +228,7 @@ body {
     height: 8px;
     opacity: 1;
   }
+
   100% {
     top: 0;
     left: 0;
@@ -310,7 +306,6 @@ body {
 }
 
 .forecast-horizontal {
-  //@include devBorder();
   @include centered-row();
   @include slight-underline-top();
   justify-content: space-evenly;
@@ -319,13 +314,13 @@ body {
   &__day {
     width: 2rem;
   }
+
   &__symbol img {
     width: 2.5rem;
   }
 }
 
 .weather-details {
-  //@include devBorder();
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;

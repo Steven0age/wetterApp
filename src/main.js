@@ -13,7 +13,6 @@ import {
   listenBackButton,
   listenFavoritButton,
   clearBackground,
-  renderSavedWeather,
   renderSearchResults,
   listenOptionsParagraph,
   checkFavoritBtn,
@@ -28,7 +27,7 @@ export let storedWeather = [];
 export let searchedWeather = [];
 const delayedInput = debounce(loadSearchResults, 500);
 
-export function loadStoredWeatherIDs() {
+function loadStoredWeatherIDs() {
   let data = [];
   data = loadFromLocalStorage();
   storedWeather = data;
@@ -68,15 +67,12 @@ export function getCurrentWeather() {
 }
 
 export function saveCurrentWeather(cityID) {
-  //console.log("storedWeather =", storedWeather);
   if (!storedWeather) {
     storedWeather = [cityID];
-    //console.log("storedWeather2 =", storedWeather);
   } else {
     storedWeather.push(cityID);
   }
   saveToLocalStorage(storedWeather);
-  //console.log("storedWeather3 =", storedWeather);
 }
 
 export function findCurrentHour() {
@@ -93,22 +89,19 @@ export function dayNames(timestamp) {
   return day;
 }
 
-export function addListenerToSearchBar() {
+function addListenerToSearchBar() {
   let inputFieldEl = document.querySelector(".search-bar");
   inputFieldEl.addEventListener("input", () => {
     delayedInput();
   });
 }
 
-export async function loadSearchResults() {
+async function loadSearchResults() {
   let searchPhrase = "";
   searchPhrase = document.querySelector(".search-bar__input").value;
-  //console.log("searchPhrase =", searchPhrase);
 
   let searchResults = await getSearchResultsFromAPI(searchPhrase);
-  console.log("searchResults =", searchResults);
   searchedWeather = searchResults;
-  console.log("searchedWeather =", searchedWeather);
   renderSearchResults(searchResults);
 }
 
@@ -122,7 +115,4 @@ function debounce(callback, delay) {
   };
 }
 
-//loadStoredWeatherIDs();
 loadMainPage();
-//loadDetailedWeatherPage("575184");
-//loadDetailedWeatherPage("2801268");
