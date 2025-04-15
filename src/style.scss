@@ -1,6 +1,9 @@
 @font-face {
   font-family: "Inter";
-  src: url(wetterApp/assets/Inter/Inter-VariableFont_opsz.ttf);
+  src: url("/assets/Inter/Inter-VariableFont_opsz.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @mixin centered-column() {
