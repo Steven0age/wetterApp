@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Inter";
-  src: url(./assets/Inter/Inter-VariableFont_opsz.ttf);
+  src: url(wetterApp/assets/Inter/Inter-VariableFont_opsz.ttf);
 }
 
 @mixin centered-column() {
@@ -37,8 +37,9 @@
 
 body {
   @include centered-row();
-  @include background-color();
+  background-color: #283a5d;
   height: 100vh;
+  height: 100dvh;
   font-family: Inter, Helvetica;
   font-weight: 400;
   color: #f0f8ff;
@@ -49,7 +50,8 @@ body {
   display: flex;
   flex-direction: column;
   width: 400px;
-  height: 900px;
+  height: 100%;
+  max-height: 900px;
   padding: 1rem 1rem;
   gap: 2rem;
   border-radius: 8px;
@@ -339,9 +341,9 @@ body {
 @media only screen and (max-width: 767px) {
   .app {
     width: 100vw;
-    height: 100dvh;
+    height: 100vh;
     margin: auto;
-    border: none;
-    box-shadow: none;
+    border: unset;
+    box-shadow: unset;
   }
 }

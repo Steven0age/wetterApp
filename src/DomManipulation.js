@@ -17,22 +17,22 @@ export async function renderMainPage(cityIDs) {
   let newHTML;
   let tileHTML = await renderSavedWeather(cityIDs);
   newHTML = `
-<div class="main-menu">
-        <h1 class="main-menu__headline">Wetter</h1>
-        <p class="main-menu__options">Bearbeiten</p>
+    <div class="main-menu">
+      <h1 class="main-menu__headline">Wetter</h1>
+      <p class="main-menu__options">Bearbeiten</p>
+    </div>
+    <div class="search-bar">
+      <input
+        class="search-bar__input"
+        type="search"
+        placeholder="Nach Stadt suchen..."
+      />
+      <div class="search-result">
       </div>
-      <div class="search-bar">
-        <input
-          class="search-bar__input"
-          type="search"
-          placeholder="Nach Stadt suchen..."
-        />
-        <div class="search-result">
-        </div>
-      </div>
-      <div class="saved-weather">${tileHTML}
-      </div>
-`;
+    </div>
+    <div class="saved-weather">${tileHTML}
+    </div>
+  `;
 
   appEl.innerHTML = newHTML;
 }
@@ -56,55 +56,57 @@ async function renderWeatherTile(cityID) {
   let is_day = data.current.is_day;
 
   let imgUrl = getConditionImagePath(code, is_day);
-  newHTML = `<div class="weather-tile" 
-              data-city-id="${cityID}" 
-              data-city-name="${data.location.name}"
-              >
-          <div class="weather-tile__icon weather-tile__icon--hide">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="weather-tile__remove-icon"
-              data-city-id="${cityID}"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-          </div>
-  <div class="weather-tile__box" style="background-image:url(${imgUrl})" data-city-id="${cityID}" data-city-name="${
+  newHTML = `
+    <div class="weather-tile" 
+      data-city-id="${cityID}" 
+      data-city-name="${data.location.name}"
+      >
+      <div class="weather-tile__icon weather-tile__icon--hide">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="weather-tile__remove-icon"
+          data-city-id="${cityID}"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      </div>
+      <div class="weather-tile__box" style="background-image:url(${imgUrl})" data-city-id="${cityID}" data-city-name="${
     data.location.name
   }">
-          <div class="weather-tile__infos-top">
-            <div class="weather-tile__infos-topleft">
-              <h2 class="weather-tile__city">${data.location.name}</h2>
-              <p class="weather-tile__country">${data.location.country}</p>
-            </div>
-            <div class="weather-tile__infos-topright">
-              <p class="weather-tile__current-temp">${Math.floor(
-                data.current.temp_c
-              )}°</p>
-            </div>
+        <div class="weather-tile__infos-top">
+          <div class="weather-tile__infos-topleft">
+            <h2 class="weather-tile__city">${data.location.name}</h2>
+            <p class="weather-tile__country">${data.location.country}</p>
           </div>
-          <div class="weather-tile__infos-bottom">
-            <div class="weather-tile__infos-bottomleft">
-              <p class="weather-tile__condition">${
-                data.current.condition.text
-              }</p>
-            </div>
-            <div class="weather-tile__infos-bottomright">
-              <p class="weather-tile__top-bottom-temp">H:${
-                data.forecast.forecastday[0].day.maxtemp_c
-              }° T:${data.forecast.forecastday[0].day.mintemp_c}°</p>
-            </div>
+          <div class="weather-tile__infos-topright">
+            <p class="weather-tile__current-temp">${Math.floor(
+              data.current.temp_c
+            )}°</p>
           </div>
         </div>
-      </div>`;
+        <div class="weather-tile__infos-bottom">
+          <div class="weather-tile__infos-bottomleft">
+            <p class="weather-tile__condition">${
+              data.current.condition.text
+            }</p>
+          </div>
+          <div class="weather-tile__infos-bottomright">
+            <p class="weather-tile__top-bottom-temp">H:${
+              data.forecast.forecastday[0].day.maxtemp_c
+            }° T:${data.forecast.forecastday[0].day.mintemp_c}°</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 
   return newHTML;
 }
@@ -114,23 +116,24 @@ export function renderLoadingScreen(city = null) {
   let newHTML;
   if (!city) {
     newHTML = `
-  <div class="loading">  
-  <p> Lade Übersicht ... </p>
-  <div class="lds-ripple">
-            <div></div>
-            <div></div>
-          </div>
-          </div>`;
+      <div class="loading">  
+        <p> Lade Übersicht ... </p>
+        <div class="lds-ripple">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    `;
   } else {
     newHTML = `
-  <div class="loading">  
-  <p> Lade Wetter für ${city} ... </p>
-  <div class="lds-ripple">
-            <div></div>
-            <div></div>
-          </div>
-          </div>
-  `;
+      <div class="loading">  
+        <p> Lade Wetter für ${city} ... </p>
+        <div class="lds-ripple">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    `;
   }
   appEl.innerHTML = newHTML;
 }
@@ -140,42 +143,42 @@ export async function renderWeatherForecastPage() {
   appEl.classList.add("app--show-current-Weather");
   let newHTML;
   newHTML = `
-     <div class="in-weather-navigation">
-        <p class="in-weather-navigation__item">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="in-weather-navigation__back"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.75 19.5 8.25 12l7.5-7.5"
-            />
-          </svg>
-        </p>
-        <p class="in-weather-navigation__item">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="in-weather-navigation__favorit"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-            />
-          </svg>
-        </p>
+    <div class="in-weather-navigation">
+      <p class="in-weather-navigation__item">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="in-weather-navigation__back"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 19.5 8.25 12l7.5-7.5"
+          />
+        </svg>
+      </p>
+      <p class="in-weather-navigation__item">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="in-weather-navigation__favorit"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+          />
+        </svg>
+      </p>
       </div>
-      <div class="current-weather">
-      </div>
+        <div class="current-weather">
+        </div>
       <div class="hourly-forecast">
         <div class="hourly-forecast__list">
         </div>
@@ -185,7 +188,7 @@ export async function renderWeatherForecastPage() {
       <div class="weather-details">
       </div>
     </div>
-          `;
+  `;
   appEl.innerHTML = newHTML;
 }
 
@@ -196,23 +199,25 @@ export async function renderCurrentWeather() {
   let data = await getCurrentWeather();
 
   currentWeatherEl.innerHTML = `
-  <p class="current-weather__city">${data.location.name}</p>
-        <p class="current-weather__temperature">${Math.floor(
-          data.current.temp_c
-        )}°</p>
-        <p class="current-weather__condition">${data.current.condition.text}</p>
-        <p class="current-weather__top-bottom-temp">H:${
-          data.forecast.forecastday[0].day.maxtemp_c
-        }° T:${data.forecast.forecastday[0].day.mintemp_c}°</p>`;
+    <p class="current-weather__city">${data.location.name}</p>
+    <p class="current-weather__temperature">${Math.floor(
+      data.current.temp_c
+    )}°</p>
+    <p class="current-weather__condition">${data.current.condition.text}</p>
+    <p class="current-weather__top-bottom-temp">H:${
+      data.forecast.forecastday[0].day.maxtemp_c
+    }° T:${data.forecast.forecastday[0].day.mintemp_c}°</p>
+  `;
 
   hourlyForecastEl.innerHTML = `
-        <div class="hourly-forecast__description">
-          <p class="hourly-forecast__text">
-            Heute: ${data.forecast.forecastday[0].day.condition.text}. Wind bis zu ${data.forecast.forecastday[0].day.maxwind_kph} km/h.
-          </p>
-        </div>
-        <div class="hourly-forecast__list">
-        </div>`;
+    <div class="hourly-forecast__description">
+      <p class="hourly-forecast__text">
+        Heute: ${data.forecast.forecastday[0].day.condition.text}. Wind bis zu ${data.forecast.forecastday[0].day.maxwind_kph} km/h.
+      </p>
+    </div>
+    <div class="hourly-forecast__list">
+    </div>
+  `;
 }
 
 export async function renderHourlyForecast() {
@@ -235,7 +240,8 @@ export async function renderHourlyForecast() {
       <p class="forecast-vertical__temperature">
         ${Math.floor(data.forecast.forecastday[0].hour[i].temp_c)}°
       </p>
-    </div>`;
+    </div>
+  `;
 
   for (i += 1; i < 24; i++) {
     newHTML += ` 
@@ -250,7 +256,8 @@ export async function renderHourlyForecast() {
         <p class="forecast-vertical__temperature">
           ${Math.floor(data.forecast.forecastday[0].hour[i].temp_c)}°
         </p>
-      </div>`;
+      </div>
+    `;
   }
 
   if (maxLoopsToday > 0) {
@@ -267,7 +274,8 @@ export async function renderHourlyForecast() {
           <p class="forecast-vertical__temperature">
             ${Math.floor(data.forecast.forecastday[1].hour[x].temp_c)}°
           </p>
-        </div>`;
+        </div>
+      `;
     }
 
     hourlyForecastListEl.innerHTML = newHTML;
@@ -281,56 +289,57 @@ export async function renderDailyForecast() {
   let dayAfterTomorrow = dayNames(data.forecast.forecastday[2].date_epoch);
 
   let newHTML = `
-  <div class="daily-forecast__description">
-    <p class="daily-forecast__text">
-      Vorhersage für die nächsten 3 Tage:
-    </p>
-  </div>
-  <div class="forecast-horizontal">
-    <div class="forecast-horizontal__day">Heute</div>
-    <div class="forecast-horizontal__symbol"><img src="${
-      data.forecast.forecastday[0].day.condition.icon
-    }" alt="${data.forecast.forecastday[0].day.condition.text}"></img></div>
-    <div class="forecast-horizontal__hottest">H:${Math.floor(
-      data.forecast.forecastday[0].day.maxtemp_c
-    )}°</div>
-    <div class="forecast-horizontal__coldest">T:${Math.floor(
-      data.forecast.forecastday[0].day.mintemp_c
-    )}°</div>
-    <div class="forecast-horizontal__wind">Wind: ${
-      data.forecast.forecastday[0].day.maxwind_kph
-    } Km/h</div>
-  </div>
-  <div class="forecast-horizontal">
-    <div class="forecast-horizontal__day">${tomorrow}</div>
-    <div class="forecast-horizontal__symbol"><img src="${
-      data.forecast.forecastday[0].day.condition.icon
-    }" alt="${data.forecast.forecastday[1].day.condition.text}"></img></div>
-    <div class="forecast-horizontal__hottest">H:${Math.floor(
-      data.forecast.forecastday[1].day.maxtemp_c
-    )}°</div>
-    <div class="forecast-horizontal__coldest">T:${Math.floor(
-      data.forecast.forecastday[1].day.mintemp_c
-    )}°</div>
-    <div class="forecast-horizontal__wind">Wind: ${
-      data.forecast.forecastday[1].day.maxwind_kph
-    } Km/h</div>
-  </div>
-  <div class="forecast-horizontal">
-    <div class="forecast-horizontal__day">${dayAfterTomorrow}</div>
-    <div class="forecast-horizontal__symbol"><img src="${
-      data.forecast.forecastday[0].day.condition.icon
-    }" alt="${data.forecast.forecastday[2].day.condition.text}"></img></div>
-    <div class="forecast-horizontal__hottest">H:${Math.floor(
-      data.forecast.forecastday[2].day.maxtemp_c
-    )}°</div>
-    <div class="forecast-horizontal__coldest">T:${Math.floor(
-      data.forecast.forecastday[2].day.mintemp_c
-    )}°</div>
-    <div class="forecast-horizontal__wind">Wind: ${
-      data.forecast.forecastday[2].day.maxwind_kph
-    } Km/h</div>
-  </div>`;
+    <div class="daily-forecast__description">
+      <p class="daily-forecast__text">
+        Vorhersage für die nächsten 3 Tage:
+      </p>
+    </div>
+    <div class="forecast-horizontal">
+      <div class="forecast-horizontal__day">Heute</div>
+      <div class="forecast-horizontal__symbol"><img src="${
+        data.forecast.forecastday[0].day.condition.icon
+      }" alt="${data.forecast.forecastday[0].day.condition.text}"></img></div>
+      <div class="forecast-horizontal__hottest">H:${Math.floor(
+        data.forecast.forecastday[0].day.maxtemp_c
+      )}°</div>
+      <div class="forecast-horizontal__coldest">T:${Math.floor(
+        data.forecast.forecastday[0].day.mintemp_c
+      )}°</div>
+      <div class="forecast-horizontal__wind">Wind: ${
+        data.forecast.forecastday[0].day.maxwind_kph
+      } Km/h</div>
+    </div>
+    <div class="forecast-horizontal">
+      <div class="forecast-horizontal__day">${tomorrow}</div>
+      <div class="forecast-horizontal__symbol"><img src="${
+        data.forecast.forecastday[0].day.condition.icon
+      }" alt="${data.forecast.forecastday[1].day.condition.text}"></img></div>
+      <div class="forecast-horizontal__hottest">H:${Math.floor(
+        data.forecast.forecastday[1].day.maxtemp_c
+      )}°</div>
+      <div class="forecast-horizontal__coldest">T:${Math.floor(
+        data.forecast.forecastday[1].day.mintemp_c
+      )}°</div>
+      <div class="forecast-horizontal__wind">Wind: ${
+        data.forecast.forecastday[1].day.maxwind_kph
+      } Km/h</div>
+    </div>
+    <div class="forecast-horizontal">
+      <div class="forecast-horizontal__day">${dayAfterTomorrow}</div>
+      <div class="forecast-horizontal__symbol"><img src="${
+        data.forecast.forecastday[0].day.condition.icon
+      }" alt="${data.forecast.forecastday[2].day.condition.text}"></img></div>
+      <div class="forecast-horizontal__hottest">H:${Math.floor(
+        data.forecast.forecastday[2].day.maxtemp_c
+      )}°</div>
+      <div class="forecast-horizontal__coldest">T:${Math.floor(
+        data.forecast.forecastday[2].day.mintemp_c
+      )}°</div>
+      <div class="forecast-horizontal__wind">Wind: ${
+        data.forecast.forecastday[2].day.maxwind_kph
+      } Km/h</div>
+    </div>
+  `;
 
   dailyForecastListEl.innerHTML = newHTML;
 }
@@ -374,10 +383,11 @@ export async function renderWeatherDetails() {
 
   dataArr.forEach((a) => {
     newHTML += `
-              <div class="detail-block">
-                <p class="detail-block__headline">${a.headline}</p>
-                <p class="detail-block__information">${a.value}</p>
-              </div>`;
+      <div class="detail-block">
+        <p class="detail-block__headline">${a.headline}</p>
+        <p class="detail-block__information">${a.value}</p>
+      </div>
+    `;
   });
   weatherDetailsEl.innerHTML = newHTML;
 }
@@ -387,10 +397,11 @@ export async function renderSearchResults(apiResults) {
   let newHTML = "";
   apiResults.forEach((a) => {
     newHTML += `
-  <div class="search-result__single-result" data-city-id="${a.id}" data-city-name="${a.name}">
-            <p class="search-result__city">${a.name}</p>
-            <p class="search-result__country">${a.country}</p>
-          </div>`;
+      <div class="search-result__single-result" data-city-id="${a.id}" data-city-name="${a.name}">
+        <p class="search-result__city">${a.name}</p>
+        <p class="search-result__country">${a.country}</p>
+      </div>
+    `;
   });
   searchResultsEl.innerHTML = newHTML;
   listenSearchResults();
