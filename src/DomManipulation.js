@@ -500,6 +500,9 @@ function showSearchResults() {
 }
 
 function hideSearchResults() {
+  if (!document.querySelector(".search-result")) {
+    return;
+  }
   const searchResultsEl = document.querySelector(".search-result");
   searchResultsEl.classList.add("search-result__single-result--hide");
 }
